@@ -252,14 +252,23 @@ table.data td.num,table.data th.num{text-align:right;font-variant-numeric:tabula
 .meter{height:7px;border-radius:var(--r-pill);background:#E4EEF5;overflow:hidden;margin:9px 0 5px;max-width:340px}
 .meter i{display:block;height:100%;background:var(--series-1);border-radius:var(--r-pill)}
 
+/* ---------- micro sparkline ---------- */
+.msp{display:block;width:100%;height:auto}
+.mspwrap{width:104px;flex:0 0 104px}
+.mspwrap .mlab{font-size:10.5px;color:var(--muted);margin-top:3px;text-align:right;
+  font-variant-numeric:tabular-nums;white-space:nowrap}
+.tile .mspwrap{width:100%;flex:none;margin-top:7px}
+.tile .mspwrap .mlab{text-align:left;margin-top:2px}
+
 /* ---------- recommendation list ---------- */
 .reclist .r{display:flex;gap:14px;align-items:center;padding:16px 0;border-bottom:1px solid var(--grid);cursor:pointer}
 .reclist .r:last-child{border-bottom:0}
 .reclist .r:hover .rt{color:var(--brand-blue)}
 .reclist .rbar{width:3px;align-self:stretch;border-radius:2px;flex:0 0 3px}
+.reclist .r > div:first-of-type{flex:1 1 auto;min-width:0}
 .reclist .rt{font-weight:600;font-size:14px;margin-bottom:2px}
 .reclist .rm{font-size:12.5px;color:var(--muted)}
-.reclist .rval{margin-left:auto;text-align:right;flex:0 0 auto}
+.reclist .rval{margin-left:auto;text-align:right;flex:0 0 214px}
 .reclist .rval .v{font-weight:600;font-size:14px;font-variant-numeric:tabular-nums}
 .reclist .rval .s{font-size:11.5px;color:var(--muted)}
 
@@ -562,7 +571,8 @@ select.f{border:1px solid var(--hairline);border-radius:var(--r-pill);padding:7p
         </div>
         <div class="tiles">
           <div class="tile"><div class="l">Total tracked</div><div class="v">CHF 191'000</div><div class="d">4 accounts</div></div>
-          <div class="tile"><div class="l">Identified saving</div><div class="v">CHF 405</div><div class="d">per year, 1 move</div></div>
+          <div class="tile"><div class="l">Identified saving</div><div class="v">CHF 405</div><div class="d">per year, 1 move</div>
+            <div class="mspwrap" data-save="405" data-years="10"></div></div>
           <div class="tile"><div class="l">Last confirmed</div><div class="v">14 Jun</div><div class="d">due again in 18 days</div></div>
         </div>
       </div>
@@ -686,6 +696,7 @@ select.f{border:1px solid var(--hairline);border-radius:var(--r-pill);padding:7p
               <div class="rt">Move your pillar 3a out of your bank's 3a fund</div>
               <div class="rm">Issued 30 June 2026 · portfolio-related · no exit fee</div>
             </div>
+            <div class="mspwrap" data-save="405" data-years="10"></div>
             <div class="rval">
               <div class="v">CHF 405 / yr</div>
               <div class="s"><span class="pill action dot">Waiting for you</span></div>
@@ -698,6 +709,7 @@ select.f{border:1px solid var(--hairline);border-radius:var(--r-pill);padding:7p
               <div class="rt">Replace your Swiss-only fund with a global index</div>
               <div class="rm">Issued 12 March 2026 · you completed it on 21 March 2026</div>
             </div>
+            <div class="mspwrap" data-save="212" data-years="10"></div>
             <div class="rval">
               <div class="v">CHF 212 / yr</div>
               <div class="s"><span class="pill ok dot">Done, saving since March</span></div>
@@ -710,6 +722,7 @@ select.f{border:1px solid var(--hairline);border-radius:var(--r-pill);padding:7p
               <div class="rt">Consolidate your two dormant 3a accounts</div>
               <div class="rm">Issued 12 March 2026 · you completed it on 2 April 2026</div>
             </div>
+            <div class="mspwrap" data-save="0"></div>
             <div class="rval">
               <div class="v">CHF 0 / yr</div>
               <div class="s"><span class="pill ok dot">Done, for the tax staggering</span></div>
@@ -722,6 +735,7 @@ select.f{border:1px solid var(--hairline);border-radius:var(--r-pill);padding:7p
               <div class="rt">Move your idle cash to a higher-interest account</div>
               <div class="rm">Issued 4 January 2026 · you chose not to act · reopened as a Q3 flag</div>
             </div>
+            <div class="mspwrap" data-save="184" data-years="10" data-tone="muted"></div>
             <div class="rval">
               <div class="v">CHF 184 / yr</div>
               <div class="s"><span class="pill neutral dot">Closed, not actioned</span></div>
@@ -729,7 +743,8 @@ select.f{border:1px solid var(--hairline);border-radius:var(--r-pill);padding:7p
           </div>
         </div>
         <hr class="rule">
-        <div class="src">Three of four acted on. We track this because a recommendation you did not take changes what we say next quarter.</div>
+        <div class="src">Three of four acted on. Each line shows what that yearly saving is worth after ten years if it stays
+        invested at 7%. We track this because a recommendation you did not take changes what we say next quarter.</div>
       </div>
     </div>
 
@@ -1481,6 +1496,37 @@ const ALLOC = [
   document.getElementById('projTableBody').innerHTML = rows;
 })();
 
+/* =========== micro sparklines: what a yearly saving is worth =========== */
+function microSpark(el, annual, years, tone){
+  const R=0.07, vals=[0]; let b=0;
+  for(let i=1;i<=years;i++){ b=b*(1+R)+annual; vals.push(b); }
+  const col = tone==='muted' ? '#8A8894' : '#009E4B';
+  const W=104,H=26,T=3,B=2,Rp=4, max=vals[years]*1.05 || 1;
+  const x=i=>(i/years)*(W-Rp);
+  const y=v=>H-B-(v/max)*(H-T-B);
+  const svg=svgEl('svg',{viewBox:`0 0 ${W} ${H}`,class:'msp',role:'img',
+    'aria-label':`Reinvested at 7 per cent, this saving is worth about ${CHF(vals[years])} after ${years} years`});
+  let d=`M${x(0)},${y(vals[0])}`;
+  vals.forEach((v,i)=> i && (d+=` L${x(i)},${y(v)}`));
+  svg.appendChild(svgEl('path',{d:d+` L${x(years)},${y(0)} L${x(0)},${y(0)} Z`,fill:col,opacity:.12}));
+  svg.appendChild(svgEl('path',{d,fill:'none',stroke:col,'stroke-width':1.8,
+    'stroke-linejoin':'round','stroke-linecap':'round'}));
+  svg.appendChild(svgEl('circle',{cx:x(years),cy:y(vals[years]),r:2.6,fill:col}));
+  el.innerHTML='';
+  el.appendChild(svg);
+  const lab=document.createElement('div');
+  lab.className='mlab';
+  lab.textContent = `${CHF(vals[years])} in ${years}y`;
+  el.appendChild(lab);
+}
+function renderMicroSparks(){
+  document.querySelectorAll('.mspwrap[data-save]').forEach(el=>{
+    const v=parseFloat(el.dataset.save)||0;
+    if(v<=0){ el.style.visibility='hidden'; return; }
+    microSpark(el, v, parseInt(el.dataset.years||'10',10), el.dataset.tone);
+  });
+}
+
 /* =========== compounding sparkline, recommendation page =========== */
 (function sparkline(){
   const svg=document.getElementById('sparkSave'), tip=document.getElementById('sparkTip');
@@ -1824,6 +1870,8 @@ const QUEUE = [
   {n:'Peter Gasser', s:'New account added · 2 rules fired', t:'<span class="pill action dot">Ready</span>'},
   {n:'Nina Kunz', s:'Provider repriced · 1 rule fired', t:'<span class="pill action dot">Ready</span>'}
 ];
+renderMicroSparks();
+
 document.getElementById('queue').innerHTML = QUEUE.map((q,i)=>`
   <div class="qrow ${q.on?'on':''}" onclick="document.querySelectorAll('.qrow').forEach(r=>r.classList.remove('on'));this.classList.add('on')">
     <div class="qav">${q.n.split(' ').map(w=>w[0]).join('')}</div>
