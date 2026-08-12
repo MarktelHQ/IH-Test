@@ -338,11 +338,24 @@ table.data td.num,table.data th.num{text-align:right;font-variant-numeric:tabula
 /* ---------- recommendation detail ---------- */
 .recheader{display:flex;justify-content:space-between;align-items:flex-start;gap:20px;margin-bottom:6px}
 .recheader h2{font-size:22px;font-weight:600;letter-spacing:-.02em;max-width:24ch}
-.numbers{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin:18px 0 4px}
+.numbers{display:grid;grid-template-columns:1.3fr 1fr;gap:14px;margin:18px 0 4px;align-items:stretch}
+.numbers .side{display:grid;gap:14px;align-content:start}
 .numbers .n{border:1px solid var(--hairline);border-radius:var(--r-md);padding:15px 16px;background:#FAFAFD}
+.numbers .n.save{background:#F5FBF7;border-color:#CDE9D8;display:grid;
+  grid-template-columns:minmax(150px,auto) minmax(0,1fr);gap:2px 22px;align-items:center}
+.numbers .n.save .txt{grid-column:1}
+.numbers .n.save .spark{grid-column:2}
+.numbers .n.save .savefoot{grid-column:1 / -1;font-size:11px;color:var(--text-secondary);
+  line-height:1.45;border-top:1px solid #DCEEE3;margin-top:12px;padding-top:10px}
 .numbers .n .l{font-size:11.5px;color:var(--muted);margin-bottom:4px}
 .numbers .n .v{font-size:25px;font-weight:600;font-family:var(--display);letter-spacing:-.02em;line-height:1.1}
+.numbers .n.save .v{font-size:30px;color:var(--success-text)}
 .numbers .n .s{font-size:11.5px;color:var(--text-secondary);margin-top:3px}
+.spark{padding-top:2px}
+.spark .cap{display:flex;justify-content:space-between;align-items:baseline;gap:10px;margin-bottom:4px}
+.spark .cap .k{font-size:10px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);font-weight:600}
+.spark .cap .e{font-size:15px;font-weight:600;font-family:var(--display);letter-spacing:-.02em;color:var(--success-text)}
+.spark .axis{display:flex;justify-content:space-between;font-size:10.5px;color:var(--muted);margin-top:3px}
 .steps{counter-reset:s;list-style:none;padding:0;margin:0}
 .steps li{counter-increment:s;position:relative;padding:0 0 16px 38px;font-size:13.5px}
 .steps li::before{
@@ -734,9 +747,31 @@ select.f{border:1px solid var(--hairline);border-radius:var(--r-pill);padding:7p
       </div>
 
       <div class="numbers">
-        <div class="n"><div class="l">You would save</div><div class="v">CHF 405</div><div class="s">every year, at today's balance</div></div>
-        <div class="n"><div class="l">It costs you</div><div class="v">CHF 0</div><div class="s">no exit fee on this product</div></div>
-        <div class="n"><div class="l">Pays for itself</div><div class="v">Immediately</div><div class="s">no break-even period</div></div>
+        <div class="n save">
+          <div class="txt">
+            <div class="l">You would save</div>
+            <div class="v">CHF 405</div>
+            <div class="s">every year, at today's balance</div>
+          </div>
+          <div class="spark">
+            <div class="cap">
+              <span class="k">After 10 years</span>
+              <span class="e" id="sparkEnd">CHF 5'596</span>
+            </div>
+            <div class="chartwrap">
+              <svg id="sparkSave" viewBox="0 0 300 62" width="100%" role="img"
+                   aria-label="The yearly saving, reinvested at 7%, grows to about CHF 5,596 after ten years"></svg>
+              <div class="tip" id="sparkTip"></div>
+            </div>
+            <div class="axis"><span>today</span><span>10 years</span></div>
+          </div>
+          <div class="savefoot">A single year understates it. If the CHF 405 you stop paying in fees is
+          invested instead, at a 7% gross return, it compounds to roughly CHF 5'596 over ten years.</div>
+        </div>
+        <div class="side">
+          <div class="n"><div class="l">It costs you</div><div class="v">CHF 0</div><div class="s">no exit fee on this product</div></div>
+          <div class="n"><div class="l">Pays for itself</div><div class="v">Immediately</div><div class="s">no break-even period</div></div>
+        </div>
       </div>
 
       <div class="grid g2" style="margin-top:16px">
@@ -1444,6 +1479,52 @@ const ALLOC = [
     rows += `<tr><td>${i===0?'Today':'+'+i+' years'}</td><td class="num">${CHF(cur[i])}</td><td class="num">${CHF(rec[i])}</td><td class="num">${CHF(rec[i]-cur[i])}</td></tr>`;
   });
   document.getElementById('projTableBody').innerHTML = rows;
+})();
+
+/* =========== compounding sparkline, recommendation page =========== */
+(function sparkline(){
+  const svg=document.getElementById('sparkSave'), tip=document.getElementById('sparkTip');
+  if(!svg) return;
+  const SAVE=405, R=0.07, YEARS=10;
+  const vals=[0]; let b=0;
+  for(let i=1;i<=YEARS;i++){ b=b*(1+R)+SAVE; vals.push(b); }
+  document.getElementById('sparkEnd').textContent = CHF(vals[YEARS]);
+
+  const W=300,H=62,T=6,B=9,L=0,Rp=8;
+  const max=vals[YEARS]*1.06;
+  const x=i=>L+(i/YEARS)*(W-L-Rp);
+  const y=v=>H-B-(v/max)*(H-T-B);
+
+  // baseline hairline, recessive
+  svg.appendChild(svgEl('line',{x1:0,x2:W,y1:y(0),y2:y(0),stroke:'#CDE9D8','stroke-width':1}));
+
+  let d=`M${x(0)},${y(vals[0])}`;
+  vals.forEach((v,i)=> i && (d+=` L${x(i)},${y(v)}`));
+  // area wash at ~10%
+  svg.appendChild(svgEl('path',{d:d+` L${x(YEARS)},${y(0)} L${x(0)},${y(0)} Z`,fill:'#009E4B',opacity:.10}));
+  // 2px line, round joins
+  svg.appendChild(svgEl('path',{d,fill:'none',stroke:'#009E4B','stroke-width':2,
+    'stroke-linejoin':'round','stroke-linecap':'round'}));
+  // end marker, 2px surface ring
+  svg.appendChild(svgEl('circle',{cx:x(YEARS),cy:y(vals[YEARS]),r:4,fill:'#009E4B',stroke:'#F5FBF7','stroke-width':2}));
+
+  const hit=svgEl('rect',{x:0,y:0,width:W,height:H,fill:'transparent'});
+  svg.appendChild(hit);
+  const cross=svgEl('line',{x1:0,x2:0,y1:T,y2:y(0),stroke:'#CDE9D8','stroke-width':1,opacity:0});
+  svg.insertBefore(cross,hit);
+  hit.addEventListener('mousemove',e=>{
+    const r=svg.getBoundingClientRect();
+    const px=(e.clientX-r.left)*(W/r.width);
+    let i=Math.round((px/(W-Rp))*YEARS); i=Math.max(0,Math.min(YEARS,i));
+    cross.setAttribute('x1',x(i)); cross.setAttribute('x2',x(i)); cross.setAttribute('opacity',1);
+    const box=tip.parentElement.getBoundingClientRect();
+    tip.innerHTML=`<b>${i===0?'Today':'Year '+i}</b><br><span class="k">Saved and invested</span> ${CHF(vals[i])}`;
+    tip.style.opacity=1;
+    let lx=e.clientX-box.left+12;
+    if(lx+tip.offsetWidth>box.width) lx=e.clientX-box.left-tip.offsetWidth-12;
+    tip.style.left=lx+'px'; tip.style.top=(e.clientY-box.top-46)+'px';
+  });
+  hit.addEventListener('mouseleave',()=>{tip.style.opacity=0;cross.setAttribute('opacity',0);});
 })();
 
 /* =========== before / after, recommendation page =========== */
