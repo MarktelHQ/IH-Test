@@ -1,0 +1,1036 @@
+<title>InvestingHero Stock Check</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Maven+Pro:wght@500;600;700&display=swap">
+<style>
+/* ============================================================
+   InvestingHero Stock Check
+   Component vocabulary from the client dashboard system.
+   brand ink #1F0E45 · brand blue #0073AA · brand green #00DF56
+   ============================================================ */
+:root{
+  --brand-ink:#1F0E45;
+  --brand-blue:#0073AA;
+  --brand-green:#00DF56;
+  --violet:#5B3FD4;
+  --violet-2:#A08BEE;
+
+  --good:#0CA30C; --warning:#FAB219; --critical:#D03B3B;
+  --success-text:#006300;
+  --action-text:#9A4318;
+  --crit-text:#A32424;
+
+  --surface:#FFFFFF;
+  --page:#F6F6F9;
+  --text-primary:#1D1D1D;
+  --text-secondary:#52514E;
+  --muted:#8A8894;
+  --grid:#EAEAF0;
+  --baseline:#C9C8D2;
+  --hairline:rgba(31,14,69,.10);
+
+  --r-lg:16px; --r-md:12px; --r-sm:8px; --r-pill:999px;
+  --sans:'Inter',system-ui,-apple-system,'Segoe UI',sans-serif;
+  --display:'Maven Pro','Inter',system-ui,sans-serif;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{font-family:var(--sans);background:var(--page);color:var(--text-primary);
+  font-size:14px;line-height:1.55;-webkit-font-smoothing:antialiased}
+h1,h2,h3,h4{font-family:var(--display);margin:0;letter-spacing:-.01em}
+a{color:var(--brand-blue);text-decoration:none}
+button{font-family:inherit;font-size:inherit;cursor:pointer}
+svg{display:block;overflow:visible}
+:focus-visible{outline:2px solid var(--brand-blue);outline-offset:3px;border-radius:4px}
+
+/* ---------- top bar ---------- */
+.topbar{background:var(--brand-ink);color:#fff;padding:14px 30px;
+  display:flex;align-items:center;gap:16px;flex-wrap:wrap;position:sticky;top:0;z-index:20}
+.topbar h1{font-size:16px;font-weight:600;color:#fff}
+.logo{display:flex;align-items:center;gap:13px}
+.logochip{background:#fff;border-radius:10px;padding:8px 12px;display:inline-flex;align-items:center;
+  box-shadow:0 1px 3px rgba(0,0,0,.14)}
+.logochip img{height:24px;width:auto;display:block}
+.logochip .fb{display:none;font-family:var(--display);font-weight:700;color:var(--brand-ink);font-size:15px;
+  letter-spacing:-.02em;white-space:nowrap}
+.logochip .fb span{opacity:.55;font-weight:500}
+.logochip.fallback .fb{display:block}
+.topbar .spacer{flex:1}
+.credits{display:flex;align-items:center;gap:9px;font-size:12.5px;color:rgba(255,255,255,.72)}
+.credits b{color:#fff}
+.pips{display:flex;gap:3px}
+.pips i{width:15px;height:5px;border-radius:var(--r-pill);background:rgba(255,255,255,.22);display:block}
+.pips i.used{background:var(--brand-green)}
+.avatar{width:30px;height:30px;border-radius:var(--r-pill);background:rgba(255,255,255,.16);color:#fff;
+  display:grid;place-items:center;font-weight:600;font-size:12px;flex:0 0 30px}
+
+/* ---------- content ---------- */
+.content{padding:26px 30px 60px;max-width:1180px;margin:0 auto}
+.greet{display:flex;align-items:flex-end;justify-content:space-between;gap:20px;margin-bottom:18px;flex-wrap:wrap}
+.greet h2{font-size:26px;font-weight:600;letter-spacing:-.02em}
+.greet p{margin:3px 0 0;color:var(--text-secondary);font-size:13.5px;max-width:76ch}
+
+/* ---------- generic ---------- */
+.card{background:var(--surface);border:1px solid var(--hairline);border-radius:var(--r-lg);padding:20px 22px}
+.card h3{font-size:14.5px;font-weight:600;margin-bottom:2px}
+.card .sub{font-size:12.5px;color:var(--muted);margin-bottom:16px;max-width:80ch}
+.grid{display:grid;gap:16px}
+.g2{grid-template-columns:1fr 1fr}
+.mb{margin-bottom:16px}
+.pill{display:inline-flex;align-items:center;gap:6px;border-radius:var(--r-pill);padding:3px 11px;
+  font-size:12px;font-weight:500;line-height:19px;white-space:nowrap}
+.pill.action{background:#FFF3E9;color:var(--action-text)}
+.pill.ok{background:#E7F6E7;color:var(--success-text)}
+.pill.crit{background:#FBECEC;color:var(--crit-text)}
+.pill.neutral{background:#F1F1F5;color:var(--text-secondary)}
+.pill.brand{background:#EDEBF6;color:var(--brand-ink)}
+.pill.dot::before{content:"";width:6px;height:6px;border-radius:50%;background:currentColor}
+.btn{white-space:nowrap;border:0;border-radius:var(--r-pill);padding:9px 18px;font-weight:600;font-size:13.5px;transition:filter .12s}
+.btn:hover{filter:brightness(.94)}
+.btn.primary{background:var(--brand-green);color:var(--brand-ink)}
+.btn.dark{background:var(--brand-ink);color:#fff}
+.btn.ghost{background:transparent;color:var(--text-secondary);border:1px solid var(--hairline)}
+.btn.ghost:hover{background:#F4F4F8;filter:none}
+.btn.sm{padding:6px 13px;font-size:12.5px}
+.meta{font-size:11.5px;color:var(--muted)}
+.src{font-size:11px;color:var(--muted)}
+.src a{color:var(--muted);text-decoration:underline;text-underline-offset:2px}
+.cat{font-size:10.5px;text-transform:uppercase;letter-spacing:.07em;font-weight:700;margin-bottom:2px}
+.hidden{display:none !important}
+.table-wrap{overflow-x:auto}
+
+/* ---------- chips, banner, search ---------- */
+.chips{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.chip{border:1px solid var(--hairline);background:var(--surface);border-radius:var(--r-pill);
+  padding:6px 14px;font-size:12.5px;color:var(--text-secondary);white-space:nowrap}
+.banner{display:flex;gap:14px;align-items:flex-start;background:#EDF5FA;border:1px solid #CFE3EF;
+  border-radius:var(--r-md);padding:13px 16px;margin-bottom:16px}
+.banner .bi{flex:0 0 auto;font-weight:700;color:var(--brand-blue);line-height:1.55}
+.banner .bt{font-weight:600;font-size:13.5px}
+.banner .bd{font-size:12.5px;color:var(--text-secondary);max-width:84ch}
+.search{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.search .f{flex:1 1 320px;display:flex;align-items:center;gap:10px;min-width:0;
+  border:1px solid var(--hairline);border-radius:var(--r-pill);padding:11px 18px;background:var(--surface)}
+.search .f:focus-within{border-color:var(--brand-blue);box-shadow:0 0 0 3px rgba(0,115,170,.13)}
+.search input{flex:1;border:0;outline:0;background:none;font-family:inherit;font-size:14px;color:var(--text-primary);min-width:0}
+
+/* ---------- compact company strip ---------- */
+.co{display:grid;grid-template-columns:minmax(230px,1fr) 1.05fr 1.05fr;gap:26px;align-items:center}
+.co .idn{display:flex;align-items:center;gap:9px;margin-bottom:7px;flex-wrap:wrap}
+.co .nm{font-family:var(--display);font-size:15px;font-weight:600}
+.tick{background:#EDEBF6;color:var(--brand-ink);font-family:var(--display);font-weight:700;font-size:11.5px;
+  letter-spacing:.03em;border-radius:var(--r-sm);padding:4px 8px}
+.co .px{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+.co .px .v{font-family:var(--display);font-size:32px;font-weight:600;letter-spacing:-.025em;font-variant-numeric:tabular-nums}
+.co .dl{font-size:12px;font-weight:600;border-radius:var(--r-pill);padding:2px 9px}
+.co .dl.dn{color:var(--action-text);background:#FFF3E9}
+.co .as{font-size:11.5px;color:var(--muted);margin-top:5px}
+.qs{display:grid;grid-template-columns:1fr 1fr;gap:9px 18px;margin-top:13px}
+.qs div{font-size:11.5px;color:var(--muted)}
+.qs b{display:block;font-family:var(--display);font-size:14px;font-weight:600;color:var(--text-primary);
+  font-variant-numeric:tabular-nums;margin-top:1px}
+.mini .lb{font-size:10.5px;text-transform:uppercase;letter-spacing:.07em;font-weight:600;color:var(--muted);margin-bottom:6px}
+.mini svg{width:100%;height:auto}
+.mini .cp{font-size:11px;color:var(--muted);margin-top:6px}
+
+/* ---------- verdict + donut ---------- */
+.vd{display:grid;grid-template-columns:1fr 220px;gap:30px;align-items:center}
+.vd h4{font-family:var(--display);font-size:19px;font-weight:600;letter-spacing:-.02em;margin-bottom:8px;max-width:44ch}
+.vd p{font-size:13.5px;color:var(--text-secondary);max-width:74ch;margin:0}
+.vd p + p{margin-top:10px}
+.donut svg{width:180px;height:180px;margin:0 auto}
+.dkey{display:flex;flex-direction:column;gap:7px;margin-top:14px;font-size:12.5px;color:var(--text-secondary)}
+.dkey span{display:flex;align-items:center;gap:8px}
+.dkey i{width:9px;height:9px;border-radius:2px;flex:0 0 9px}
+.dkey b{margin-left:auto;font-variant-numeric:tabular-nums;color:var(--text-primary)}
+.dc-n{font-family:var(--display);font-size:32px;font-weight:700;fill:var(--text-primary)}
+.dc-l{font-size:10px;fill:var(--muted);letter-spacing:.07em;text-transform:uppercase;font-family:var(--sans)}
+
+
+/* ---------- run states ---------- */
+.results{opacity:0;transform:translateY(10px);transition:opacity .4s ease,transform .4s ease}
+.results.in{opacity:1;transform:none}
+@media (prefers-reduced-motion: reduce){.results{transition:none}}
+
+.thinking{margin-bottom:16px}
+.thinking .th{display:flex;align-items:center;gap:13px;margin-bottom:14px}
+.thinking h3{font-size:15px;font-weight:600;margin:0}
+.thinking .el{margin-left:auto;font-size:12px;color:var(--muted);font-variant-numeric:tabular-nums}
+.spin{width:20px;height:20px;border-radius:50%;flex:0 0 20px;
+  border:2.5px solid #EDEBF6;border-top-color:var(--brand-ink);animation:sp .8s linear infinite}
+@keyframes sp{to{transform:rotate(360deg)}}
+@media (prefers-reduced-motion: reduce){.spin{animation:none}}
+.steps2{list-style:none;padding:0;margin:0}
+.st{display:flex;gap:12px;align-items:center;padding:9px 0;border-bottom:1px solid var(--grid);
+  font-size:13.5px;color:var(--muted);transition:color .25s}
+.st:last-child{border-bottom:0}
+.st .dot{width:19px;height:19px;border-radius:50%;flex:0 0 19px;display:grid;place-items:center;
+  font-size:10px;font-weight:700;background:#F1F1F5;color:var(--muted);transition:background .25s,color .25s}
+.st.on{color:var(--text-primary);font-weight:500}
+.st.on .dot{background:#EDEBF6;color:var(--brand-ink);animation:pl 1.1s ease-in-out infinite}
+@keyframes pl{0%,100%{box-shadow:0 0 0 0 rgba(31,14,69,.20)}50%{box-shadow:0 0 0 5px rgba(31,14,69,0)}}
+@media (prefers-reduced-motion: reduce){.st.on .dot{animation:none}}
+.st.done{color:var(--text-secondary)}
+.st.done .dot{background:#E7F6E7;color:var(--success-text)}
+.thinking .bar{height:4px;border-radius:2px;background:#EDEBF6;margin-top:16px;overflow:hidden}
+.thinking .bar i{display:block;height:100%;width:0;background:var(--brand-ink);transition:width .35s linear}
+.btn[disabled]{opacity:.55;cursor:default;filter:none}
+
+.idle{margin-bottom:16px}
+.vals{display:grid;grid-template-columns:repeat(3,1fr);gap:26px}
+.vals .k{font-family:var(--display);font-size:14.5px;font-weight:600;margin-bottom:5px;
+  padding-bottom:9px;border-bottom:2px solid #EDEBF6}
+.vals p{font-size:13px;color:var(--text-secondary);margin:9px 0 0}
+@media (max-width:900px){.vals{grid-template-columns:1fr;gap:18px}}
+
+/* ---------- index gauge ---------- */
+.idxhead{display:flex;justify-content:space-between;align-items:flex-start;gap:18px;flex-wrap:wrap;margin-bottom:22px}
+.idxnow{display:flex;align-items:center;gap:14px;flex:0 0 auto}
+.idxnow .n{font-family:var(--display);font-size:46px;font-weight:700;line-height:1;color:var(--action-text);
+  font-variant-numeric:tabular-nums}
+.idxnow .b{display:block;font-size:11px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:var(--action-text)}
+.idxnow .d{display:block;font-size:12.5px;color:var(--text-secondary);margin-top:2px}
+
+.bullet{margin:0 0 4px}
+.bullet .cap{position:relative;height:28px}
+.bullet .flag{position:absolute;transform:translateX(-50%);white-space:nowrap;font-size:12px;font-weight:700;
+  color:#fff;background:var(--action-text);border-radius:var(--r-pill);padding:3px 12px;top:0}
+.bullet .flag::after{content:"";position:absolute;left:50%;bottom:-5px;transform:translateX(-50%);
+  border-left:5px solid transparent;border-right:5px solid transparent;border-top:5px solid var(--action-text)}
+.bullet .track{position:relative;height:28px;display:flex}
+.bullet .z{height:100%}
+.bullet .z.g{background:#DFF3DF;border-radius:var(--r-sm) 0 0 var(--r-sm)}
+.bullet .z.a{background:#FDE8D3}
+.bullet .z.r{background:#F8DADA;border-radius:0 var(--r-sm) var(--r-sm) 0}
+.bullet .move{position:absolute;top:12px;height:4px;border-radius:2px;background:var(--warning);opacity:.85}
+.bullet .prev{position:absolute;top:4px;width:3px;height:20px;border-radius:2px;background:var(--violet);transform:translateX(-50%)}
+.bullet .now{position:absolute;top:-4px;width:7px;height:36px;border-radius:4px;background:var(--action-text);
+  box-shadow:0 0 0 2px #fff;transform:translateX(-50%)}
+.bullet .scale{position:relative;height:46px;margin-top:10px;font-size:11px;color:var(--muted)}
+.bullet .was{position:absolute;transform:translateX(-50%);top:-2px;font-size:11px;color:var(--violet);font-weight:600;white-space:nowrap}
+.bullet .zn{position:absolute;transform:translateX(-50%);text-align:center;line-height:1.35;top:18px}
+.bullet .zn b{display:block;font-weight:600;color:var(--text-secondary);font-size:11.5px}
+
+.qrow{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:26px;padding-top:20px;border-top:1px solid var(--grid)}
+.q{text-align:center}
+.q .v{font-family:var(--display);font-size:17px;font-weight:700;font-variant-numeric:tabular-nums;color:var(--text-secondary)}
+.q .bar{height:56px;width:66px;margin:8px auto 9px;background:#F1F1F5;border-radius:5px;display:flex;align-items:flex-end;overflow:hidden}
+.q .bar i{display:block;width:100%;background:#C9BEF2}
+.q .lb{font-size:11.5px;color:var(--text-secondary);font-weight:500}
+.q .lb span{display:block;font-size:10.5px;color:var(--muted);font-weight:400}
+.q.now .v{color:var(--action-text);font-size:20px}
+.q.now .bar i{background:var(--warning)}
+.q.now .lb{color:var(--action-text);font-weight:700}
+.q .delta{font-size:11px;font-weight:700;color:var(--action-text)}
+
+.datatoggle{background:none;border:0;color:var(--muted);font-size:11.5px;text-decoration:underline;
+  text-underline-offset:2px;padding:0;margin-top:14px}
+table.data{width:100%;border-collapse:collapse;margin-top:12px;font-size:12.5px}
+table.data th,table.data td{text-align:left;padding:6px 8px;border-bottom:1px solid var(--grid)}
+table.data th{color:var(--muted);font-weight:500}
+table.data td.num,table.data th.num{text-align:right;font-variant-numeric:tabular-nums}
+table.data td.em{font-weight:600;color:var(--text-primary)}
+table.data tr.tot td{border-bottom:0;border-top:1px solid var(--hairline);font-weight:600;color:var(--text-primary)}
+
+/* ---------- findings ---------- */
+.card.sec{padding:0;margin-bottom:12px}
+.sechead{display:flex;gap:14px;align-items:center;cursor:pointer;list-style:none;padding:18px 22px;border-radius:var(--r-lg)}
+.sechead::-webkit-details-marker{display:none}
+.sechead:hover .ti{color:var(--brand-blue)}
+.sechead .ic{width:36px;height:36px;border-radius:var(--r-md);flex:0 0 36px;display:grid;place-items:center;font-size:16px;font-weight:700}
+.sechead .bd{flex:1;min-width:0}
+.sechead .ti{display:block;font-family:var(--display);font-size:16px;font-weight:600;letter-spacing:-.015em}
+.sechead .de{display:block;font-size:12.5px;color:var(--text-secondary)}
+.sechead .ct{font-family:var(--display);font-size:22px;font-weight:700;font-variant-numeric:tabular-nums}
+.sechead .chev{width:13px;height:13px;flex:0 0 13px;display:grid;place-items:center;color:var(--muted);font-size:9px;transition:transform .15s}
+details[open] > .sechead .chev{transform:rotate(90deg);color:var(--brand-blue)}
+@media (prefers-reduced-motion: reduce){.sechead .chev{transition:none}}
+.inbox{padding:0 22px 6px;display:flex;flex-direction:column}
+
+.item{display:flex;gap:14px;padding:15px 0;border-top:1px solid var(--grid);align-items:flex-start;cursor:pointer}
+.item .ic{width:34px;height:34px;border-radius:var(--r-md);flex:0 0 34px;display:grid;place-items:center;
+  font-size:12px;font-weight:700;font-family:var(--display);letter-spacing:.02em}
+.item .bd{flex:1;min-width:0}
+.item .ti{font-weight:600;font-size:13.5px;margin-bottom:1px}
+.item .de{font-size:12.5px;color:var(--text-secondary)}
+.item .ac{display:flex;gap:8px;align-items:center;flex:0 0 auto}
+.itembody{font-size:13.5px;color:var(--text-secondary);padding:2px 0 20px 48px;max-width:80ch;line-height:1.62}
+.itembody p{margin:0 0 12px}
+.itembody p:last-child{margin-bottom:0}
+.itembody b{color:var(--text-primary);font-variant-numeric:tabular-nums}
+.itembody h4{font-size:13px;font-weight:700;color:var(--text-primary);margin:18px 0 7px;font-family:var(--sans);letter-spacing:0}
+.itembody table{width:100%;border-collapse:collapse;font-size:12.5px;margin:4px 0 14px}
+.itembody th,.itembody td{text-align:left;padding:7px 10px;border-bottom:1px solid var(--grid)}
+.itembody th{color:var(--muted);font-weight:500;border-bottom:1px solid var(--hairline)}
+.itembody td.num,.itembody th.num{text-align:right;font-variant-numeric:tabular-nums}
+.itembody tr:last-child td{border-bottom:0}
+.cbox{background:#FAFAFD;border:1px solid var(--hairline);border-left:3px solid var(--violet);
+  border-radius:0 var(--r-md) var(--r-md) 0;padding:12px 15px;margin:4px 0 14px;font-size:13px}
+.cbox.warn{border-left-color:var(--warning);background:#FFFCF5}
+.cbox.good{border-left-color:var(--good);background:#F5FBF7}
+.cbox b{display:block;margin-bottom:2px;color:var(--text-primary)}
+.ufoot{border-top:1px solid var(--grid);margin-top:16px;padding-top:11px;font-size:11.5px;color:var(--muted)}
+
+/* ---------- steps + reports ---------- */
+.steps{counter-reset:s;list-style:none;padding:0;margin:0}
+.steps li{counter-increment:s;position:relative;padding:0 0 16px 38px;font-size:13.5px;color:var(--text-secondary)}
+.steps li::before{content:counter(s);position:absolute;left:0;top:0;width:24px;height:24px;border-radius:50%;
+  background:#EDEBF6;color:var(--brand-ink);font-weight:700;font-size:12px;display:grid;place-items:center}
+.steps li::after{content:"";position:absolute;left:11.5px;top:26px;bottom:2px;width:1px;background:var(--grid)}
+.steps li:last-child{padding-bottom:0}
+.steps li:last-child::after{display:none}
+.steps b{display:block;font-weight:600;margin-bottom:1px;color:var(--text-primary)}
+
+.reclist .r{display:flex;gap:14px;align-items:center;padding:15px 0;border-bottom:1px solid var(--grid)}
+.reclist .r:last-child{border-bottom:0;padding-bottom:0}
+.reclist .rbar{width:3px;align-self:stretch;border-radius:2px;flex:0 0 3px}
+.reclist .b{flex:1 1 auto;min-width:0}
+.reclist .rt{font-weight:600;font-size:13.5px;margin-bottom:1px}
+.reclist .rm{font-size:12px;color:var(--muted)}
+.reclist .rv{text-align:right;flex:0 0 104px}
+.reclist .rv .v{font-family:var(--display);font-weight:700;font-size:17px;font-variant-numeric:tabular-nums;line-height:1.1}
+.reclist .rv .s{font-size:10.5px;font-weight:600;letter-spacing:.07em;text-transform:uppercase;margin-top:1px}
+.tcrit{color:var(--crit-text)} .tact{color:var(--action-text)} .tok{color:var(--success-text)}
+.recfoot{display:flex;justify-content:space-between;align-items:center;gap:14px;flex-wrap:wrap;
+  margin-top:16px;padding-top:13px;border-top:1px solid var(--hairline);font-size:12px;color:var(--muted)}
+
+/* ---------- footer ---------- */
+.foot{background:var(--brand-ink);border-color:var(--brand-ink)}
+.foot .disclose{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.16);border-radius:var(--r-md);
+  padding:14px 16px;font-size:12.5px;color:rgba(255,255,255,.70)}
+.foot .disclose b{color:#fff}
+.foot .disclose p{margin:0}
+.foot .disclose p + p{margin-top:9px}
+.foot .src{color:rgba(255,255,255,.52);margin-top:12px}
+.foot .src a{color:rgba(255,255,255,.72)}
+
+@media (max-width:980px){
+  .co{grid-template-columns:1fr}
+  .vd{grid-template-columns:1fr}
+  .donut{max-width:240px}
+}
+@media (max-width:900px){
+  .g2{grid-template-columns:1fr}
+  .content{padding:22px 18px 56px}
+  .topbar{padding:12px 18px}
+}
+@media (max-width:560px){
+  .itembody{padding-left:0}
+  .item .ac{flex-direction:column;align-items:flex-end;gap:6px}
+}
+</style>
+
+<header class="topbar">
+  <span class="logo">
+    <span class="logochip"><img src="https://investinghero.ch/wp-content/uploads/2025/09/logo_transparent.svg" alt="InvestingHero" onerror="this.closest('.logochip').classList.add('fallback');this.remove()"><span class="fb">Investing<span>Hero</span></span></span>
+    <h1>Stock Check</h1>
+  </span>
+  <span class="spacer"></span>
+  <div class="credits">
+    <span class="pips" role="img" aria-label="2 of 5 weekly credits used"><i class="used"></i><i class="used"></i><i></i><i></i><i></i></span>
+    <span id="credText"><b>3 of 5</b> credits left, resets Monday</span>
+  </div>
+  <span class="avatar" aria-hidden="true">SM</span>
+</header>
+
+<main class="content">
+
+  <div class="greet">
+    <div>
+      <h2>Which company are you interested in?</h2>
+      <p>We read every public filing a company makes, not the marketing it sends you. Each page of the accounts is checked line by line and scored against our own algorithm, built from the patterns behind decades of corporate failures. Enter a company below to start.</p>
+    </div>
+    <span class="pill brand dot">1 credit per check</span>
+  </div>
+
+  <div class="card mb">
+    <div class="search">
+      <label class="f">
+        <span aria-hidden="true" style="color:var(--muted)">&#9906;</span>
+        <input type="text" id="coInput" value="NVIDIA Corporation (NVDA)" aria-label="Company name or ticker">
+      </label>
+      <button class="btn primary" type="button" id="runBtn">Run check</button>
+    </div>
+    <div class="chips" style="margin-top:14px">
+      <span class="meta">Recently searched</span>
+      <button class="chip" type="button">Palantir</button>
+      <button class="chip" type="button">CoreWeave</button>
+      <button class="chip" type="button">Rolls-Royce</button>
+      <button class="chip" type="button">Novo Nordisk</button>
+    </div>
+  </div>
+
+  <section class="card idle" id="idle">
+    <div class="vals">
+      <div>
+        <div class="k">Every filing, not the highlights</div>
+        <p>The annual report, the quarterly accounts and every note behind them. Including the pages the results announcement leaves out.</p>
+      </div>
+      <div>
+        <div class="k">35 checks on one company</div>
+        <p>Cash quality, customer concentration, commitments, provisions, governance, accounting policy and valuation, each traced to its source.</p>
+      </div>
+      <div>
+        <div class="k">One score, one method</div>
+        <p>A single number from 0 to 100, calculated the same way every quarter so you can compare this quarter with the last, and one company with another.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="card thinking hidden" id="thinking" aria-live="polite">
+    <div class="th">
+      <span class="spin" aria-hidden="true"></span>
+      <div>
+        <h3 id="thTitle">Thinking</h3>
+        <div class="sub" style="margin:0">NVIDIA Corporation, filings to 26 July 2026</div>
+      </div>
+      <span class="el" id="thEl">0.0s</span>
+    </div>
+    <ul class="steps2" id="thSteps"></ul>
+    <div class="bar"><i id="thBar"></i></div>
+  </section>
+
+  <div id="results" class="results hidden">
+
+  <!-- ============ COMPANY STRIP ============ -->
+  <section class="card mb">
+    <div class="co">
+      <div>
+        <div class="idn">
+          <span class="tick">NVDA</span>
+          <span class="nm">NVIDIA Corporation</span>
+          <span class="pill neutral">NASDAQ</span>
+        </div>
+        <div class="px">
+          <span class="v">$217.55</span>
+          <span class="dl dn">&#9660; 4.57%</span>
+        </div>
+        <div class="as">Last close 28 Aug 2026. Filings to 26 Jul 2026.</div>
+        <div class="qs">
+          <div>Market cap<b>$5.25tn</b></div>
+          <div>Year to date<b>+16.7%</b></div>
+          <div>P/E trailing<b>27.5x</b></div>
+          <div>52-week range<b>$164 to $237</b></div>
+        </div>
+      </div>
+
+      <div class="mini">
+        <div class="lb">Price, last five years</div>
+        <svg viewBox="0 0 320 96" role="img" aria-labelledby="spT spD">
+          <title id="spT">NVDA share price, 2021 to 2026</title>
+          <desc id="spD">The price fell through 2022, rose steeply across 2023 and 2024, and has flattened since.</desc>
+          <defs>
+            <linearGradient id="spg" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#5B3FD4" stop-opacity=".22"></stop>
+              <stop offset="100%" stop-color="#5B3FD4" stop-opacity="0"></stop>
+            </linearGradient>
+          </defs>
+          <line x1="6" y1="88" x2="310" y2="88" stroke="var(--grid)"></line>
+          <path d="M6,82.5 L66.8,88 L127.6,74.9 L188.4,43.2 L249.2,23.6 L310,12 L310,88 L6,88 Z" fill="url(#spg)"></path>
+          <polyline points="6,82.5 66.8,88 127.6,74.9 188.4,43.2 249.2,23.6 310,12"
+                    fill="none" stroke="var(--violet)" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"></polyline>
+          <circle cx="310" cy="12" r="4.5" fill="var(--violet)" stroke="#fff" stroke-width="2"></circle>
+        </svg>
+        <div class="cp">$29.35 at the end of 2021, $217.55 now. Up 641% over five years.</div>
+      </div>
+
+      <div class="mini">
+        <div class="lb">Return by calendar year</div>
+        <svg viewBox="0 0 320 118" role="img" aria-labelledby="yrT yrD">
+          <title id="yrT">NVDA price return by calendar year, 2022 to 2026</title>
+          <desc id="yrD">Down 50.3 percent in 2022, up 238.9 percent in 2023, up 171.2 percent in 2024, up 38.9 percent in 2025, and up 16.7 percent so far in 2026.</desc>
+          <line x1="8" y1="78" x2="312" y2="78" stroke="var(--baseline)"></line>
+          <rect x="25"  y="78"   width="30" height="12.6" rx="3" fill="var(--violet-2)"><title>2022: down 50.3%</title></rect>
+          <rect x="85"  y="18"   width="30" height="60"   rx="3" fill="var(--violet)"><title>2023: up 238.9%</title></rect>
+          <rect x="145" y="35"   width="30" height="43"   rx="3" fill="var(--violet)"><title>2024: up 171.2%</title></rect>
+          <rect x="205" y="68.2" width="30" height="9.8"  rx="3" fill="var(--violet)"><title>2025: up 38.9%</title></rect>
+          <rect x="265" y="73.8" width="30" height="4.2"  rx="3" fill="var(--violet)"><title>2026 so far: up 16.7%</title></rect>
+          <text x="100" y="13"  class="s-x2" text-anchor="middle" style="font-weight:700;fill:var(--violet)">+239%</text>
+          <text x="40"  y="101" class="s-x2" text-anchor="middle" style="font-weight:700;fill:var(--violet)">&minus;50%</text>
+          <text x="40"  y="115" class="s-x2" text-anchor="middle">2022</text>
+          <text x="100" y="115" class="s-x2" text-anchor="middle">2023</text>
+          <text x="160" y="115" class="s-x2" text-anchor="middle">2024</text>
+          <text x="220" y="115" class="s-x2" text-anchor="middle">2025</text>
+          <text x="280" y="115" class="s-x2" text-anchor="middle">2026</text>
+        </svg>
+        <div class="cp">Price only, dividends excluded. 2026 runs to 28 August.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ VERDICT ============ -->
+  <section class="card mb">
+    <div class="vd">
+      <div>
+        <h4>The revenue is real. The question is who pays for it, and with whose money.</h4>
+        <p>Nothing here matches a fraud pattern. The product is physical and can be verified independently, the customers publish their own spending, and every uncomfortable number below came from the company's own filings.</p>
+        <p>What changed this quarter is the quality of the earnings. Revenue rose 18% while operating cash flow fell 52%. A growing share of reported profit is unrealised gains on companies the business funds, which then buy its products. And more of the demand is paid for with borrowed money, some of it guaranteed by the company itself.</p>
+      </div>
+
+      <div class="donut">
+        <svg viewBox="0 0 180 180" role="img" aria-labelledby="dnT dnD">
+          <title id="dnT">Findings by severity</title>
+          <desc id="dnD">Of 35 findings, 5 are red, 19 are amber and 11 are green.</desc>
+          <g transform="rotate(-90 90 90)" fill="none" stroke-width="22">
+            <circle cx="90" cy="90" r="62" stroke="var(--critical)" stroke-dasharray="53.6 336.0" stroke-dashoffset="0"></circle>
+            <circle cx="90" cy="90" r="62" stroke="var(--warning)"  stroke-dasharray="209.5 180.1" stroke-dashoffset="-55.6"></circle>
+            <circle cx="90" cy="90" r="62" stroke="var(--good)"     stroke-dasharray="120.5 269.1" stroke-dashoffset="-267.1"></circle>
+          </g>
+          <text x="90" y="89" class="dc-n" text-anchor="middle">35</text>
+          <text x="90" y="107" class="dc-l" text-anchor="middle">Findings</text>
+        </svg>
+        <div class="dkey">
+          <span><i style="background:var(--critical)"></i>Red<b>5</b></span>
+          <span><i style="background:var(--warning)"></i>Amber<b>19</b></span>
+          <span><i style="background:var(--good)"></i>Green<b>11</b></span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ INDEX TREND ============ -->
+  <section class="card mb">
+    <div class="idxhead">
+      <div>
+        <h3>Red Flag Index</h3>
+        <p class="sub" style="margin-bottom:0">Five disclosed measures, each scored 0 (clean) to 100 (severe) against a fixed band, then averaged. Same formula every quarter, for every company.</p>
+      </div>
+      <div class="idxnow">
+        <span class="n">55</span>
+        <span>
+          <span class="b">Elevated</span>
+          <span class="d">Up 17 points. 12 short of severe.</span>
+        </span>
+      </div>
+    </div>
+
+    <div class="bullet">
+      <div class="cap">
+        <span class="flag" style="left:55%">Now 55</span>
+      </div>
+      <div class="track" role="img" aria-label="The index is 55 out of 100, inside the elevated band which runs from 33 to 67. It was 38 last quarter.">
+        <span class="z g" style="flex:33"></span>
+        <span class="z a" style="flex:34"></span>
+        <span class="z r" style="flex:33"></span>
+        <span class="move" style="left:38%;width:17%"></span>
+        <span class="prev" style="left:38%"></span>
+        <span class="now" style="left:55%"></span>
+      </div>
+      <div class="scale">
+        <span class="was" style="left:38%">was 38</span>
+        <span class="zn" style="left:16.5%"><b>Contained</b>0 to 33</span>
+        <span class="zn" style="left:50%"><b>Elevated</b>33 to 67</span>
+        <span class="zn" style="left:83.5%"><b>Severe</b>67 to 100</span>
+      </div>
+    </div>
+
+    <div class="qrow">
+      <div class="q">
+        <div class="v">39</div>
+        <div class="bar"><i style="height:22px"></i></div>
+        <div class="lb">Q3 FY26<span>Oct 2025</span></div>
+      </div>
+      <div class="q">
+        <div class="v">34</div>
+        <div class="bar"><i style="height:19px"></i></div>
+        <div class="lb">Q4 FY26<span>Jan 2026</span></div>
+      </div>
+      <div class="q">
+        <div class="v">38</div>
+        <div class="bar"><i style="height:21px"></i></div>
+        <div class="lb">Q1 FY27<span>Apr 2026</span></div>
+      </div>
+      <div class="q now">
+        <div class="v">55 <span class="delta">+17</span></div>
+        <div class="bar"><i style="height:31px"></i></div>
+        <div class="lb">Q2 FY27<span>Jul 2026</span></div>
+      </div>
+    </div>
+
+    <button class="datatoggle" type="button" data-target="idxData" aria-expanded="false">Show the numbers</button>
+    <div class="table-wrap"><table class="data hidden" id="idxData">
+      <thead><tr><th>Measure</th><th class="num">Q3 FY26</th><th class="num">Q4 FY26</th><th class="num">Q1 FY27</th><th class="num">Q2 FY27</th></tr></thead>
+      <tbody>
+        <tr><td>Cash conversion</td><td class="num">0.74x</td><td class="num">0.84x</td><td class="num">0.86x</td><td class="num em">0.40x</td></tr>
+        <tr><td>Days sales outstanding</td><td class="num">53</td><td class="num">51</td><td class="num">45</td><td class="num em">60</td></tr>
+        <tr><td>Inventory days</td><td class="num">119</td><td class="num">114</td><td class="num">115</td><td class="num">119</td></tr>
+        <tr><td>Gross margin</td><td class="num">73.4%</td><td class="num">75.0%</td><td class="num">74.9%</td><td class="num">75.0%</td></tr>
+        <tr><td>Non-operating share of profit</td><td class="num">5%</td><td class="num">12%</td><td class="num em">23%</td><td class="num">11%</td></tr>
+        <tr class="tot"><td>Red Flag Index</td><td class="num">39</td><td class="num">34</td><td class="num">38</td><td class="num em">55</td></tr>
+      </tbody>
+    </table></div>
+    <p class="src" style="margin-top:12px">Higher is worse. The first three points apply the current formula to historic accounts. From next quarter the series is a live record.</p>
+  </section>
+
+  <!-- ============ FINDINGS ============ -->
+  <div class="greet" style="margin:26px 0 14px">
+    <div>
+      <h2>The findings</h2>
+      <p>Grouped by what the evidence supports. Open any finding for the figures behind it and the note they came from.</p>
+    </div>
+    <span class="pill brand">35 findings</span>
+  </div>
+
+  <details class="card sec">
+    <summary class="sechead">
+      <span class="ic" style="background:#FBECEC;color:var(--crit-text)" aria-hidden="true">!</span>
+      <span class="bd">
+        <span class="ti">Red: matches a known failure pattern</span>
+        <span class="de">Evidence strong enough to change a decision</span>
+      </span>
+      <span class="ct" style="color:var(--crit-text)">5</span>
+      <span class="chev" aria-hidden="true">&#9654;</span>
+    </summary>
+    <div class="inbox" id="boxR"></div>
+  </details>
+
+  <details class="card sec">
+    <summary class="sechead">
+      <span class="ic" style="background:#FFF3E9;color:var(--action-text)" aria-hidden="true">?</span>
+      <span class="bd">
+        <span class="ti">Amber: needs more investigation</span>
+        <span class="de">Not disqualifying, but worth an answer before you commit</span>
+      </span>
+      <span class="ct" style="color:var(--action-text)">19</span>
+      <span class="chev" aria-hidden="true">&#9654;</span>
+    </summary>
+    <div class="inbox" id="boxA"></div>
+  </details>
+
+  <details class="card sec" style="margin-bottom:26px">
+    <summary class="sechead">
+      <span class="ic" style="background:#E7F6E7;color:var(--success-text)" aria-hidden="true">&#10003;</span>
+      <span class="bd">
+        <span class="ti">Green: looks legitimate</span>
+        <span class="de">Tests this company passes cleanly</span>
+      </span>
+      <span class="ct" style="color:var(--success-text)">11</span>
+      <span class="chev" aria-hidden="true">&#9654;</span>
+    </summary>
+    <div class="inbox" id="boxG"></div>
+  </details>
+
+  <!-- ============ NEXT ============ -->
+  <div class="grid g2 mb">
+    <section class="card">
+      <h3>What would settle it</h3>
+      <p class="sub">Every amber finding resolves one way or the other within two or three quarters. Next results are due late November 2026.</p>
+      <ol class="steps">
+        <li><b>Cash conversion back above 70% of profit</b>This quarter it was 40%. Two more quarters below 60% and the revenue is a financing programme rather than a sales result.</li>
+        <li><b>Collection time back below 55 days</b>It moved from 45 to 60 in one quarter. A further rise means longer terms are the price of the next order, not a one-off.</li>
+        <li><b>Gross margin bottoms near 71% and recovers</b>Guidance is 74%, down from 75%. A sustained slide below 70% breaks the pricing-power case.</li>
+        <li><b>Independent demand grows faster than the guarantees</b>The one that matters most. If guarantees, stakes and extended terms keep growing in line with revenue, the ecosystem is not yet self-funding.</li>
+        <li><b>Goodwill survives its first impairment review</b>$21.1bn, quadrupled in two years by a deal struck near a cycle peak.</li>
+      </ol>
+    </section>
+
+    <section class="card reclist">
+      <h3>Recent checks</h3>
+      <p class="sub">Saved to your account. Opening a check is free. Running it again when the company files costs one credit.</p>
+      <div class="r">
+        <span class="rbar" style="background:var(--warning)"></span>
+        <div class="b"><div class="rt">NVIDIA Corporation, NVDA</div><div class="rm">Run today, filings to 26 Jul 2026</div></div>
+        <div class="rv"><div class="v tact">55</div><div class="s tact">Elevated</div></div>
+        <button class="btn ghost sm">Open</button>
+      </div>
+      <div class="r">
+        <span class="rbar" style="background:var(--critical)"></span>
+        <div class="b"><div class="rt">CoreWeave, CRWV</div><div class="rm">Run 24 Aug 2026, filings to 30 Jun 2026</div></div>
+        <div class="rv"><div class="v tcrit">71</div><div class="s tcrit">Severe</div></div>
+        <button class="btn ghost sm">Open</button>
+      </div>
+      <div class="r">
+        <span class="rbar" style="background:var(--good)"></span>
+        <div class="b"><div class="rt">Rolls-Royce Holdings, RR.L</div><div class="rm">Run 17 Aug 2026, filings to 30 Jun 2026</div></div>
+        <div class="rv"><div class="v tok">28</div><div class="s tok">Contained</div></div>
+        <button class="btn ghost sm">Open</button>
+      </div>
+      <div class="r">
+        <span class="rbar" style="background:var(--warning)"></span>
+        <div class="b"><div class="rt">Palantir Technologies, PLTR</div><div class="rm">Run 11 Aug 2026, filings to 30 Jun 2026</div></div>
+        <div class="rv"><div class="v tact">49</div><div class="s tact">Elevated</div></div>
+        <button class="btn ghost sm">Open</button>
+      </div>
+      <div class="r">
+        <span class="rbar" style="background:var(--good)"></span>
+        <div class="b"><div class="rt">Novo Nordisk, NVO</div><div class="rm">Run 3 Aug 2026, filings to 30 Jun 2026</div></div>
+        <div class="rv"><div class="v tok">31</div><div class="s tok">Contained</div></div>
+        <button class="btn ghost sm">Open</button>
+      </div>
+      <div class="recfoot">
+        <span>5 checks run, 2 credits used this week</span>
+        <button class="btn dark sm">View all checks</button>
+      </div>
+    </section>
+  </div>
+
+  <!-- ============ FOOTER ============ -->
+  <section class="card foot">
+    <div class="disclose">
+      <p>Prepared from the company's most recent quarterly results and financial statements (period ended 26 July 2026, released 26 August 2026), with independent analysis of that filing. Figures are as reported. Ratios and comparisons are calculated from them. Three figures come from third-party readings of the filing rather than the company's own release: the split of non-operating income, the earnings per share excluding investment gains, and the receivable concentration percentages.</p>
+      <p>Applying a failure-detection framework to a company is <b>not an allegation of wrongdoing</b>. It is a way of finding where a story is load-bearing. InvestingHero does not make investment recommendations. Past performance is not a guide to future returns, and the value of investments can fall as well as rise.</p>
+      <p class="src">Sources:
+        <a href="https://nvidianews.nvidia.com/news/nvidia-announces-financial-results-for-second-quarter-fiscal-2027">Q2 FY2027 results</a>,
+        <a href="https://www.sec.gov/Archives/edgar/data/1045810/000104581026000075/nvda-20260726.htm">Form 10-Q</a>,
+        <a href="https://sec-api.io/insights/nvidia-financial-analysis">filing analysis</a>,
+        <a href="https://insight.factset.com/hyperscalers-tap-external-financing-as-ai-capex-outruns-cash-flow">cloud capex financing</a>,
+        <a href="https://www.sec.gov/newsroom/press-releases/2022-79">2022 SEC settlement</a>,
+        <a href="https://www.slickcharts.com/symbol/NVDA/returns">annual returns</a>,
+        <a href="https://stockanalysis.com/stocks/nvda/statistics/">price and valuation</a>
+      </p>
+    </div>
+  </section>
+
+  </div>
+
+</main>
+
+<script>
+const SEV = {
+  r:{bg:'#FBECEC', col:'#A32424', pill:'<span class="pill crit dot">Red flag</span>'},
+  a:{bg:'#FFF3E9', col:'#9A4318', pill:'<span class="pill action dot">Investigate</span>'},
+  g:{bg:'#E7F6E7', col:'#006300', pill:'<span class="pill ok dot">Passes</span>'}
+};
+
+const F = [
+{s:'r', id:'R1', cat:'Cash quality', ti:'Cash conversion broke in a single quarter',
+ de:'Cash flow statement. 0.40x conversion, was 0.86x',
+ body:`<p>The company reported <b>$59.7bn</b> of profit and collected <b>$24.1bn</b> of operating cash. That is a conversion ratio of <b>0.40x</b>, against <b>0.86x</b> the quarter before. Revenue grew 18% sequentially while operating cash flow fell 52%.</p>
+ <div class="cbox"><b>Why it matters</b>Profit is an opinion until the cash arrives. The cash here has been deferred rather than lost, but the gap is now big enough to be the story rather than a footnote.</div>
+ <div class="ufoot">Source: consolidated statements of cash flows and operations, quarter ended 26 July 2026. Prior-quarter figures derived from the six-month totals in the same filing.</div>`},
+
+{s:'r', id:'R2', cat:'Concentration', ti:'Customers owe two thirds of a quarter of revenue, and five names hold most of it',
+ de:'Balance sheet and concentration note. $63.1bn owed, 60 days',
+ body:`<p>Amounts owed by customers reached <b>$63.1bn</b>, up from <b>$38.5bn</b> at the January year end. Average collection time went from <b>45 to 60 days</b>. Large customers on multi-quarter agreements now get terms of <b>90 days to a full year</b>.</p>
+ <h4>Who owes the money</h4>
+ <table>
+   <thead><tr><th>Position</th><th class="num">Share of receivables</th><th class="num">A year ago</th></tr></thead>
+   <tbody>
+     <tr><td>Largest customer</td><td class="num">22%</td><td class="num">25%</td></tr>
+     <tr><td>Second</td><td class="num">14%</td><td class="num">18%</td></tr>
+     <tr><td>Third</td><td class="num">13%</td><td class="num">13%</td></tr>
+     <tr><td>Fourth and fifth</td><td class="num">21%</td><td class="num">none</td></tr>
+     <tr><td><b>Top five combined</b></td><td class="num"><b>70%</b></td><td class="num"><b>56%</b></td></tr>
+   </tbody>
+ </table>
+ <p>Selling on credit is normal. Selling on year-long credit to five unnamed counterparties is a credit position, not a sales ledger.</p>
+ <div class="ufoot">Source: concentration of credit risk note, quarterly filing 26 July 2026. Comparatives as at 25 January 2026.</div>`},
+
+{s:'r', id:'R3', cat:'Demand quality', ti:'The buyers are increasingly paying with borrowed money',
+ de:'Third-party analysis. Debt now 32% of buyer capex',
+ body:`<p>Combined spending by the five largest cloud buyers is set to pass <b>$690bn</b> this year, up more than <b>80%</b>. The share funded by debt rose from <b>9%</b> two years ago to <b>32%</b> on a trailing basis. Free cash flow is expected near zero or negative for all but two of them.</p>
+ <div class="cbox warn"><b>The question this raises</b>Where is the money coming from? It used to come from the richest operating cash flows in corporate history. Increasingly it comes from credit markets, which makes the demand sensitive to the price of credit as well as to the value of the product.</div>
+ <div class="ufoot">Source: third-party analysis of the five largest cloud buyers' own filings, published August 2026. Not from the company's own disclosures.</div>`},
+
+{s:'r', id:'R4', cat:'Disclosure', ti:'The largest number in the accounts is not in the results release',
+ de:'Commitments note. $279bn, up $160bn in one quarter',
+ body:`<p>Manufacturing and supply commitments jumped to <b>$279bn</b> from <b>$119bn</b>, an increase of <b>$160bn</b> in thirteen weeks. Total future commitments run to roughly <b>$366bn</b>. Cash on hand is <b>$22.4bn</b>, with a further <b>$34.1bn</b> in short-term securities.</p>
+ <p>None of it appears in the headline announcement. It takes twenty minutes in the notes to find, and it changes how everything above it reads.</p>
+ <div class="ufoot">Source: commitments and contingencies note, quarterly filing 26 July 2026.</div>`},
+
+{s:'r', id:'R5', cat:'Ratio trend', ti:'Five line items are moving out of step with sales at once',
+ de:'Cross-check across the filing. Five of five running ahead',
+ body:`<p>Set each item in the accounts against the sales that support it. Anything running ahead needs a reason. This quarter five run ahead at the same time.</p>
+ <table>
+   <thead><tr><th>Line item</th><th class="num">Movement</th><th class="num">Revenue</th></tr></thead>
+   <tbody>
+     <tr><td>Days sales outstanding</td><td class="num">45 to 60 days</td><td class="num">n/a</td></tr>
+     <tr><td>Receivables</td><td class="num">+55%</td><td class="num">+18%</td></tr>
+     <tr><td>Inventory</td><td class="num">+22%</td><td class="num">+18%</td></tr>
+     <tr><td>Supply commitments</td><td class="num">+134%</td><td class="num">+18%</td></tr>
+     <tr><td>Operating cash flow</td><td class="num">&minus;52%</td><td class="num">+18%</td></tr>
+   </tbody>
+ </table>
+ <p>Each has an innocent explanation, and the company offers a plausible one for each. They rarely arrive alone, and the innocent explanations stay available right up until they stop being true.</p>
+ <div class="ufoot">Source: calculated from the balance sheet, cash flow statement and commitments note, quarter ended 26 July 2026. All movements are quarter on quarter.</div>`},
+
+{s:'a', id:'A1', cat:'Earnings quality', ti:'A fifth of half-year profit is unrealised gains on companies the business funds',
+ de:'Non-operating income. $23.7bn across the half',
+ body:`<p>Non-operating income was <b>$7.8bn</b> this quarter. Across the half, gains on equity holdings reached roughly <b>$23.7bn</b>, about a fifth of half-year profit. Strip them out and trailing earnings per share falls from about <b>$7.92 to $6.87</b>, which raises the trailing multiple by roughly four turns.</p>
+ <div class="cbox"><b>The issue is not that the gains are fake</b>It is that the party doing the valuing and the party benefiting from the valuation are the same party.</div>
+ <div class="ufoot">Source: income statement and investments note. The split between realised and unrealised gains comes from third-party analysis of the filing.</div>`},
+
+{s:'a', id:'A2', cat:'Earnings quality', ti:'$36.9bn of those holdings cannot currently be sold',
+ de:'Investments note. Lock-up restrictions',
+ body:`<p>The company holds <b>$47.9bn</b> of unlisted equity stakes and <b>$47.7bn</b> of listed ones. Of the listed holdings, <b>$36.9bn</b> sits under lock-up restrictions. It is marked to market, recognised in profit, and cannot be sold.</p>
+ <div class="ufoot">Source: fair value and investments notes, quarterly filing 26 July 2026.</div>`},
+
+{s:'a', id:'A3', cat:'Related exposure', ti:'The company has begun underwriting its own customers',
+ de:'Guarantees and investments. Up to $105bn guaranteed',
+ body:`<p>Roughly <b>$50bn</b> invested in frontier AI labs and about <b>$99bn</b> of equity investments in total. A guarantee of up to <b>$105bn</b> behind one customer's data-centre campus, plus <b>$1.5bn</b> of equity into the developer. Financing platforms assembled with major private-credit firms targeting <b>$500bn</b> of third-party capital. Take-or-pay commitments that let customers raise debt against them.</p>
+ <div class="cbox warn"><b>Management said this on the results call</b>Those customers are "growing faster than what their balance sheets and credit profiles can support". That is candid, and it is also why the guarantees exist.</div>
+ <div class="ufoot">Source: commitments, guarantees and investments notes. Call transcript, 26 August 2026.</div>`},
+
+{s:'a', id:'A4', cat:'Related exposure', ti:'Related in substance, not in the disclosure',
+ de:'Related-party note. No material transactions declared',
+ body:`<p>The filing discloses no material related-party transactions. That is correct under the accounting standards, because the stakes sit below the thresholds that would require it. With roughly <b>$96bn</b> of combined holdings, much of it in customers and their suppliers, the absence of that note tells you about the threshold rather than about the relationships.</p>
+ <div class="ufoot">Source: related-party disclosures and investments note, quarterly filing 26 July 2026.</div>`},
+
+{s:'a', id:'A5', cat:'Transparency', ti:'You cannot name the customers you are underwriting',
+ de:'Concentration note. Customers disclosed as letters',
+ body:`<p>One customer was <b>22%</b> of last year's revenue and another <b>14%</b>, so 36% between them, disclosed only as letters. The five behind 70% of receivables are also unnamed. The company knows each one's order book, credit profile and financing sources. You know a letter of the alphabet.</p>
+ <div class="ufoot">Source: customer concentration disclosures, annual report FY2026 and quarterly filing 26 July 2026.</div>`},
+
+{s:'a', id:'A6', cat:'Governance', ti:'The bonus plan rewards the number under most strain',
+ de:'Compensation plan. 100% weighted to revenue growth',
+ body:`<p>This year's variable pay plan weights senior officer bonuses entirely to revenue growth, with no margin, cash-flow or inventory measure. That plan covered the quarter in which <b>$160bn</b> of new supply commitments were approved, collection times lengthened by fifteen days, and free cash flow more than halved.</p>
+ <p>No accusation is implied. Incentives tell you which number a management team will favour when two of them diverge, and this quarter they diverged.</p>
+ <div class="ufoot">Source: third-party reading of the FY2027 variable compensation plan as filed.</div>`},
+
+{s:'a', id:'A7', cat:'Accounting', ti:'The adjusted-earnings definition changed mid-year',
+ de:'Non-GAAP reconciliation. Share-based pay no longer excluded',
+ body:`<p>From the start of this financial year, adjusted figures no longer exclude share-based pay. Adjusted earnings per share (<b>$2.22</b>) now sits below the statutory figure (<b>$2.46</b>), the reverse of the historic relationship.</p>
+ <div class="cbox good"><b>This one counts in the company's favour</b>The change makes reporting more conservative, not less. The only warning is that a multi-year adjusted chart spliced across that boundary is not comparable, and you will be shown some.</div>
+ <div class="ufoot">Source: non-GAAP reconciliation, quarterly results release 26 August 2026.</div>`},
+
+{s:'a', id:'A8', cat:'History', ti:'There is precedent for this company obscuring where demand came from',
+ de:'2022 regulatory settlement. $5.5m penalty',
+ body:`<p>In 2022 the company paid a <b>$5.5m</b> penalty to settle regulatory charges of inadequate disclosure. It had failed to tell investors that cryptocurrency mining was a significant driver of growth in its gaming revenue.</p>
+ <p>Old, small, settled without admission, and a different management problem. It belongs here because the failure that was sanctioned was not overstating revenue. It was declining to explain the source.</p>
+ <div class="ufoot">Source: regulator's press release and settled order, May 2022.</div>`},
+
+{s:'a', id:'A9', cat:'Acquisitions', ti:'Goodwill has quadrupled and has never been tested by a downturn',
+ de:'Balance sheet. $21.1bn goodwill, was $4.6bn',
+ body:`<p>Goodwill stands at <b>$21.1bn</b> against roughly <b>$4.6bn</b> two years ago. Almost all of it comes from a <b>$20bn</b> asset purchase completed in December 2025, the largest deal in the company's history, with <b>$2.9bn</b> of deferred consideration paid this half.</p>
+ <p>Nothing is impaired and the acquired roadmap appears to be delivering. Deals struck near a cycle peak tend to show their price in a write-down two or three years later, not in the announcement.</p>
+ <div class="ufoot">Source: goodwill and intangibles note and cash flow statement, quarterly filing 26 July 2026.</div>`},
+
+{s:'a', id:'A10', cat:'Provisions', ti:'Receivables grew 64% and the provision against them is not visible',
+ de:'Balance sheet. No separate credit-loss allowance disclosed',
+ body:`<p>Amounts owed went from <b>$38.5bn</b> to <b>$63.1bn</b> since January. Concentration went from three customers at 25, 18 and 13% of the balance to five at 22, 14, 13, 11 and 10%. The quarterly filing carries no separate allowance for credit losses.</p>
+ <p>These are investment-grade counterparties and this is not a lending business. But the provision is the number that would settle the question, and at this reporting frequency it cannot be seen.</p>
+ <div class="ufoot">Source: balance sheet and concentration note. The absence of an allowance line is itself the observation.</div>`},
+
+{s:'a', id:'A11', cat:'Balance sheet', ti:'One of the most cash-generative companies in history has started borrowing',
+ de:'Financing activities. $24.9bn of new debt in the half',
+ body:`<p>The company raised <b>$24.9bn</b> of net new debt in the first half, taking total debt to about <b>$33bn</b>, while returning <b>$26bn</b> to shareholders in the second quarter alone.</p>
+ <p>On its own this is ordinary capital management. Alongside cash conversion at 0.40x and collection times lengthening in the same period, it points the same way as everything else.</p>
+ <div class="ufoot">Source: financing activities in the cash flow statement and the debt note, quarterly filing 26 July 2026.</div>`},
+
+{s:'a', id:'A12', cat:'Commitments', ti:'Future obligations are far larger than the cash available to meet them',
+ de:'Commitments note. $366bn against $22.4bn of cash',
+ body:`<p>Roughly <b>$366bn</b> of total future commitments covering supply, cloud services, data-centre leases, equity investments and capital spending, against <b>$22.4bn</b> of cash. Inventory has risen to <b>$31.6bn</b> from <b>$21.4bn</b> at the January year end, with raw materials nearly tripling.</p>
+ <p>This is a company building hard against a forecast. The forecast may well be right. The point is that the commitment is already made and the demand is not yet cash.</p>
+ <div class="ufoot">Source: commitments note and inventory note, quarterly filing 26 July 2026.</div>`},
+
+{s:'a', id:'A13', cat:'Margin', ti:'Gross margin is guided down on component scarcity',
+ de:'Guidance. 75.0% falling to 74.0%',
+ body:`<p>Gross margin held at <b>75.0%</b> this quarter but is guided to <b>74.0%</b> next, on memory costs. A single point is noise. A sustained slide below 70% would break the pricing-power argument that most of the valuation rests on.</p>
+ <div class="ufoot">Source: outlook section of the quarterly results release, 26 August 2026.</div>`},
+
+{s:'a', id:'A14', cat:'Valuation', ti:'The cheapness sits entirely in the forecast',
+ de:'Market data. 17x sales, 23x book',
+ body:`<p>Price to sales is about <b>17x</b> and price to book about <b>23x</b>. A forward multiple of 18 only exists because roughly <b>70%</b> revenue growth next year is taken as given. Adjust for the investment gains inside earnings and the trailing multiple is nearer <b>30x</b>.</p>
+ <div class="ufoot">Source: market data as at the close on 28 August 2026. Forward growth figure from management guidance.</div>`},
+
+{s:'a', id:'A15', cat:'Valuation', ti:'No comparable business earns anything close to this',
+ de:'Income statement. 66% operating margin',
+ body:`<p>No other supplier of physical industrial hardware earns a <b>66%</b> operating margin at this scale. Sometimes that gap is a real moat, and here there is one: the software ecosystem, the networking, the systems integration. But when similar businesses return much less, the difference is usually risk you have not priced as well as skill you have found. The market is pricing only the second.</p>
+ <div class="ufoot">Source: operating income over revenue, quarter ended 26 July 2026.</div>`},
+
+{s:'a', id:'A16', cat:'Holding period', ti:'The case depends on a spending cycle, and cycles end',
+ de:'Judgement. Not a figure from the filings',
+ body:`<p>The case for owning this rests on a capital spending boom that is by design not boring. Ask the honest version of the question. If the price did nothing for five years while the build-out digested, would you still hold? If the answer depends on the chart, this is a speculation, which is fine as long as it is named.</p>
+ <div class="ufoot">This finding is a judgement about how the position is held, not a figure from the accounts.</div>`},
+
+{s:'a', id:'A17', cat:'Structure', ti:'The complexity has moved downstream, into entities you cannot read',
+ de:'Guarantees and lessor structures. Outside the consolidation',
+ body:`<p>Guarantees, take-or-pay commitments, minority stakes, private-credit platforms and property-lessor structures now sit between the revenue and the cash that eventually pays for it. None of those entities consolidate onto the balance sheet, and most do not file public accounts.</p>
+ <div class="cbox"><b>What that means in practice</b>You can audit this company. You cannot audit the solvency of the counterparties that decide whether <b>$63bn</b> of receivables converts.</div>
+ <div class="ufoot">Source: commitments and guarantees notes. The counterparty entities are named in press reporting, not in the filing.</div>`},
+
+{s:'a', id:'A18', cat:'Structure', ti:'Roughly $820bn of lease obligations sit across the wider ecosystem',
+ de:'Third-party aggregation. Five largest cloud buyers',
+ body:`<p>Lease commitments across the five largest cloud buyers add up to about <b>$820bn</b>. Much of it is structured so the assets and the debt behind them do not appear where an investor would naturally look. It is legal, disclosed in fragments, and hard to add up.</p>
+ <div class="ufoot">Source: third-party aggregation of lease disclosures across five companies' filings, 2026.</div>`},
+
+{s:'a', id:'A19', cat:'Incentives', ti:'Who benefits from you not understanding the structure?',
+ de:'Judgement. $99bn of marks depend on the chain holding',
+ body:`<p>Everyone holding unrealised marks that only clear while the financing chain holds. That includes the company's own <b>$99bn</b> investment book, the labs whose valuations those marks reference, and the credit vehicles lending against the resulting capacity. None of it is improper. It does mean the people best placed to explain the structure are the people least served by you understanding it.</p>
+ <div class="ufoot">This finding is an observation about incentives, not an allegation about conduct.</div>`},
+
+{s:'g', id:'G1', cat:'Product', ti:'The revenue is physical and corroborated from three sides',
+ de:'Foundry output, deployed capacity, customer capex',
+ body:`<p>This is silicon. It can be counted at the foundry, deployed as measurable capacity, and matched against customers' own published capital spending. Three independent parties would have to be lying in the same direction.</p>
+ <div class="ufoot">Cross-checked against the company's revenue disclosures and the five largest buyers' reported capital spending.</div>`},
+
+{s:'g', id:'G2', cat:'Liquidity', ti:'Some customers pay up front, so receivables are not the whole ledger',
+ de:'Deferred revenue. $15.6bn of customer advances',
+ body:`<p>Deferred revenue additions in the first half were <b>$17.7bn</b>, including <b>$15.6bn</b> of customer advances, against <b>$13.9bn</b> recognised. Cash arrives early from one set of customers while another set gets up to a year to pay.</p>
+ <div class="cbox good"><b>This softens finding R2</b>The concentration risk is unchanged, but the liquidity picture is better than the receivables line on its own suggests.</div>
+ <div class="ufoot">Source: revenue and deferred revenue note, quarterly filing 26 July 2026.</div>`},
+
+{s:'g', id:'G3', cat:'Collections', ti:'No intermediary is holding the cash',
+ de:'Billing is direct to customers and manufacturing partners',
+ body:`<p>There is no zero-revenue entity between the customer and the company, and no third-party processor holding balances offshore. The financing structures that do exist sit alongside the revenue, not inside the collection chain.</p>
+ <div class="ufoot">Based on the revenue recognition policy and segment disclosures in the quarterly filing.</div>`},
+
+{s:'g', id:'G4', cat:'Terms', ti:'Nothing is being promised to you',
+ de:'Listed equity. No yield, lock-up or referral structure',
+ body:`<p>No guaranteed return, no fixed yield, no lock-up, no redemption gate, no referral commission, no proprietary strategy that cannot be explained. Daily liquidity on a public exchange and quarterly filings. Every classic promoted-investment tell is absent.</p>
+ <div class="ufoot">Structural check against the characteristics common to promoted and fraudulent investment offers.</div>`},
+
+{s:'g', id:'G5', cat:'Structure', ti:'The issuer itself is completely legible',
+ de:'Delaware, NASDAQ, SEC-reporting, Big Four audited',
+ body:`<p>Delaware incorporated, US headquartered, NASDAQ listed, SEC reporting, Big Four audited. No offshore holding chain, no nominee directors, no secrecy jurisdiction between you and the accounts.</p>
+ <div class="ufoot">Source: registration details and auditor statement in the annual and quarterly filings.</div>`},
+
+{s:'g', id:'G6', cat:'Disclosure', ti:'The asymmetry is disclosed, not concealed',
+ de:'Every red finding above came from the company filings',
+ body:`<p>The customer concentration, the collection times, the payment terms, the commitments, the guarantees and the pay design are all in the filings. Nobody needed a whistleblower. They needed to read past the headline number.</p>
+ <div class="ufoot">Every figure in the red and amber sections traces to a named note in a public filing.</div>`},
+
+{s:'g', id:'G7', cat:'Accounting', ti:'No costs are being turned into assets',
+ de:'Income statement. $7.1bn of R&amp;D expensed in full',
+ body:`<p>Research and development of <b>$7.1bn</b> in the quarter and <b>$13.4bn</b> in the half is expensed as incurred, with nothing capitalised. This is the most common and most flattering accounting trick available to a company at this stage, and it is simply absent.</p>
+ <div class="ufoot">Source: income statement and accounting policies, quarterly filing 26 July 2026.</div>`},
+
+{s:'g', id:'G8', cat:'Inventory', ti:'Inventory is still being written down',
+ de:'Cost of sales. $784m of provisions in the quarter',
+ body:`<p>Provisions of <b>$784m</b> in the quarter and <b>$1.6bn</b> in the half were charged against cost of sales. A management team using stock valuation to smooth profit quietly stops writing down. This one is still taking the charge while inventory builds, which is the harder choice.</p>
+ <div class="ufoot">Source: inventory note, quarterly filing 26 July 2026.</div>`},
+
+{s:'g', id:'G9', cat:'Governance', ti:'No auditor change, no going-concern language, no qualification',
+ de:'Same Big Four firm for over two decades',
+ body:`<p>No auditor resignation, no late filing, no restatement of these accounts and no going-concern wording. That is the cluster of signals that precedes most corporate failures, and none of it is present.</p>
+ <div class="ufoot">Source: auditor statements and filing history.</div>`},
+
+{s:'g', id:'G10', cat:'Valuation', ti:'The headline multiple is not a mania multiple',
+ de:'Market data. 27.5x trailing, 18x forward',
+ body:`<p>A trailing price to earnings ratio of about <b>27.5x</b>, a forward multiple near <b>18x</b> and a growth-adjusted ratio around <b>0.37</b>. On reported forward earnings that is cheaper than the broad market. Whatever else is true, you are not being asked to pay a bubble price for reported profits.</p>
+ <div class="ufoot">Source: market data as at the close on 28 August 2026. Read alongside finding A14.</div>`},
+
+{s:'g', id:'G11', cat:'Position sizing', ti:'The same holding can be an investment or a speculation. Size decides',
+ de:'Judgement. About how you hold it, not what it is',
+ body:`<p>Held at a normal weight inside a diversified portfolio, this is an investment in the dominant supplier to a real industry. Sized on the last three years of returns, funded by borrowing, or concentrated because it has worked, it is a speculation in an investment's clothes. That choice is yours, not the company's.</p>
+ <div class="ufoot">This finding is about position size, the one variable entirely within your control.</div>`}
+];
+
+function itemHTML(f){
+  const c = SEV[f.s];
+  return `<div class="item" onclick="expand(this)">
+      <div class="ic" style="background:${c.bg};color:${c.col}">${f.id}</div>
+      <div class="bd">
+        <div class="cat" style="color:${c.col}">${f.cat}</div>
+        <div class="ti">${f.ti}</div>
+        <div class="de">${f.de}</div>
+      </div>
+      <div class="ac">${c.pill}<button class="btn ghost sm">Read</button></div>
+    </div>
+    <div class="itembody hidden">${f.body}</div>`;
+}
+function expand(el){
+  const b = el.nextElementSibling;
+  b.classList.toggle('hidden');
+  el.querySelector('.ac .btn').textContent = b.classList.contains('hidden') ? 'Read' : 'Close';
+}
+['r','a','g'].forEach(function(s){
+  document.getElementById('box'+s.toUpperCase()).innerHTML =
+    F.filter(function(f){return f.s===s;}).map(itemHTML).join('');
+});
+
+
+/* ---------------- demo run ---------------- */
+const STEPS = [
+  ['Fetching every filing the company has made this year', 800],
+  ['Parsing the income statement, balance sheet and cash flow', 950],
+  ['Reading the notes to the accounts, line by line', 1400],
+  ['Tracing revenue through to cash collected', 1150],
+  ['Checking receivables, inventory and collection times', 1000],
+  ['Scanning commitments, guarantees and off balance sheet items', 1300],
+  ['Checking customer concentration and related parties', 1000],
+  ['Comparing every line item against sales', 900],
+  ['Scoring against the last four quarters', 850],
+  ['Writing up the findings', 900]
+];
+
+const runBtn  = document.getElementById('runBtn');
+const thinkEl = document.getElementById('thinking');
+const resEl   = document.getElementById('results');
+const stepsEl = document.getElementById('thSteps');
+const barEl   = document.getElementById('thBar');
+const elEl    = document.getElementById('thEl');
+const pips    = document.querySelectorAll('.pips i');
+const credEl  = document.getElementById('credText');
+let credits = 3, running = false, timers = [];
+
+function paintCredits(){
+  pips.forEach(function(p,i){ p.classList.toggle('used', i < (5 - credits)); });
+  if(credEl) credEl.innerHTML = credits > 0
+    ? '<b>' + credits + ' of 5</b> credits left, resets Monday'
+    : '<b>No credits left</b>, resets Monday';
+  if(credits === 0){ runBtn.disabled = true; runBtn.textContent = 'No credits left'; }
+}
+
+function run(){
+  if(running || credits === 0) return;
+  running = true;
+  timers.forEach(clearTimeout); timers = [];
+  credits--; paintCredits();
+
+  runBtn.disabled = true;
+  runBtn.textContent = 'Running';
+  resEl.classList.add('hidden'); resEl.classList.remove('in');
+  const idleEl = document.getElementById('idle');
+  if(idleEl) idleEl.classList.add('hidden');
+  document.querySelectorAll('#results details.sec').forEach(function(d){ d.open = false; });
+
+  stepsEl.innerHTML = STEPS.map(function(t,i){
+    return '<li class="st" data-i="' + i + '"><span class="dot">' + (i+1) + '</span><span>' + t[0] + '</span></li>';
+  }).join('');
+  barEl.style.width = '0%';
+  thinkEl.classList.remove('hidden');
+  thinkEl.scrollIntoView({behavior:'smooth', block:'nearest'});
+
+  const t0 = Date.now();
+  const tick = setInterval(function(){
+    elEl.textContent = ((Date.now() - t0) / 1000).toFixed(1) + 's';
+  }, 100);
+
+  let at = 0;
+  STEPS.forEach(function(step, i){
+    timers.push(setTimeout(function(){
+      const rows = stepsEl.querySelectorAll('.st');
+      if(i > 0){ rows[i-1].classList.remove('on'); rows[i-1].classList.add('done'); rows[i-1].querySelector('.dot').textContent = '\u2713'; }
+      rows[i].classList.add('on');
+      barEl.style.width = Math.round(((i+1)/STEPS.length)*100) + '%';
+    }, at));
+    at += step[1];
+  });
+
+  timers.push(setTimeout(function(){
+    clearInterval(tick);
+    const rows = stepsEl.querySelectorAll('.st');
+    const last = rows[rows.length-1];
+    last.classList.remove('on'); last.classList.add('done'); last.querySelector('.dot').textContent = '\u2713';
+    barEl.style.width = '100%';
+    elEl.textContent = ((Date.now() - t0) / 1000).toFixed(1) + 's';
+    document.getElementById('thTitle').textContent = 'Check complete';
+
+    setTimeout(function(){
+      thinkEl.classList.add('hidden');
+      resEl.classList.remove('hidden');
+      requestAnimationFrame(function(){ resEl.classList.add('in'); });
+      resEl.scrollIntoView({behavior:'smooth', block:'start'});
+      running = false;
+      if(credits > 0){ runBtn.disabled = false; runBtn.textContent = 'Run again'; }
+    }, 450);
+  }, at));
+}
+
+runBtn.addEventListener('click', run);
+document.getElementById('coInput').addEventListener('keydown', function(e){ if(e.key === 'Enter'){ e.preventDefault(); run(); } });
+document.querySelectorAll('.chips .chip').forEach(function(c){
+  c.addEventListener('click', function(){ document.getElementById('coInput').value = c.textContent; });
+});
+paintCredits();
+
+document.querySelectorAll('.datatoggle').forEach(function(btn){
+  btn.addEventListener('click', function(){
+    var t = document.getElementById(btn.dataset.target);
+    var open = t.classList.toggle('hidden') === false;
+    btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+    btn.textContent = open ? 'Hide the numbers' : 'Show the numbers';
+  });
+});
+</script>
