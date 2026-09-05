@@ -16,46 +16,44 @@
     --line:#C6D0DC;
     --tape:#FFB100;
     --pipe:#12776E;
-    --pipe-pale:#DCEDEB;
-    --swiss:#C8102E;
     --r:14px;
-    --shadow:0 1px 0 var(--line);
   }
   *{box-sizing:border-box}
   html{-webkit-text-size-adjust:100%}
   body{
-    margin:0;
-    background:var(--page);
-    color:var(--ink);
+    margin:0;background:var(--page);color:var(--ink);
     font-family:"IBM Plex Sans",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
-    font-size:17px;
-    line-height:1.55;
+    font-size:17px;line-height:1.55;
   }
   .wrap{max-width:1000px;margin:0 auto;padding:0 20px}
-  h1,h2,h3,.display{font-family:"Bricolage Grotesque","IBM Plex Sans",sans-serif;font-weight:800;letter-spacing:-0.02em;line-height:1.05;margin:0}
+  h1,h2,h3{font-family:"Bricolage Grotesque","IBM Plex Sans",sans-serif;font-weight:800;letter-spacing:-0.02em;line-height:1.05;margin:0}
   p{margin:0 0 0.9em}
-  a{color:var(--pipe)}
   :focus-visible{outline:3px solid var(--tape);outline-offset:3px;border-radius:4px}
 
   /* ---------- masthead ---------- */
-  header.top{background:var(--ink);color:#fff;padding:38px 0 30px}
-  header.top .kicker{font-size:14px;color:#9DB0CC;margin:0 0 14px;font-weight:500}
-  header.top h1{font-size:clamp(34px,6.4vw,60px);color:#fff;max-width:16ch}
+  header.top{background:var(--ink);color:#fff;padding:30px 0 30px}
+  .toprow{display:flex;align-items:flex-start;gap:16px;margin-bottom:14px}
+  header.top .kicker{font-size:14px;color:#9DB0CC;margin:0;font-weight:500;flex:1}
+  header.top h1{font-size:clamp(32px,6.2vw,58px);color:#fff;max-width:16ch}
   header.top h1 em{font-style:normal;color:var(--tape)}
-  header.top .sub{margin:16px 0 0;max-width:52ch;color:#C6D3E6;font-size:17px}
+  header.top .sub{margin:16px 0 0;max-width:52ch;color:#C6D3E6}
+
+  .lang{display:flex;gap:2px;background:#1E2E4A;border:1px solid #33486B;border-radius:999px;padding:3px;flex:0 0 auto}
+  .lang button{
+    font:inherit;font-weight:600;font-size:13px;cursor:pointer;border:none;background:transparent;
+    color:#9DB0CC;padding:6px 15px;border-radius:999px;letter-spacing:.03em;
+  }
+  .lang button[aria-pressed="true"]{background:var(--tape);color:#2A1D00}
 
   /* ---------- pipeline ---------- */
   .rig{background:var(--ink);padding:0 0 44px}
-  .track{
-    background:#1E2E4A;border:1px solid #2F4364;border-radius:var(--r);
-    padding:22px 18px 18px;position:relative;overflow:hidden;
-  }
+  .track{background:#1E2E4A;border:1px solid #2F4364;border-radius:var(--r);padding:22px 18px 18px;position:relative;overflow:hidden}
   .track-label{font-size:13px;color:#8FA5C6;margin:0 0 18px}
-  .stations{display:grid;grid-template-columns:repeat(6,1fr);gap:6px;position:relative}
+  .stations{display:grid;grid-template-columns:repeat(6,1fr);gap:6px}
   .stn{
     min-width:0;background:#16233A;border:1px solid #33486B;border-radius:10px;
-    padding:12px 8px;text-align:center;transition:background .2s,border-color .2s,transform .2s;
-    cursor:pointer;
+    padding:12px 8px;text-align:center;cursor:pointer;
+    transition:background .2s,border-color .2s,transform .2s;
   }
   .stn .icon{font-size:22px;line-height:1;display:block;margin-bottom:8px;filter:grayscale(1) opacity(.55)}
   .stn .en{display:block;font-size:12.5px;font-weight:600;color:#DCE6F5;line-height:1.25}
@@ -67,57 +65,39 @@
   .stn.done{border-color:var(--pipe);background:#123A3F}
   .stn.done .icon{filter:none;opacity:.9}
 
-  .readout{
-    margin-top:16px;background:#101B2E;border:1px dashed #3A5178;border-radius:10px;
-    padding:14px 16px;min-height:78px;color:#DCE6F5;font-size:15px;
-  }
+  .readout{margin-top:16px;background:#101B2E;border:1px dashed #3A5178;border-radius:10px;padding:14px 16px;min-height:82px;color:#DCE6F5;font-size:15px}
   .readout b{color:var(--tape);font-weight:600}
   .readout .who{display:block;font-size:12px;color:#8FA5C6;margin-bottom:5px}
 
   .controls{margin-top:16px;display:flex;gap:10px;flex-wrap:wrap;align-items:center}
-  .counter{font-size:13px;color:#8FA5C6;margin-left:auto}
-  button.act{
-    font:inherit;font-weight:600;font-size:15px;cursor:pointer;
-    background:var(--tape);color:#2A1D00;border:none;border-radius:999px;padding:11px 22px;
-  }
+  button.act{font:inherit;font-weight:600;font-size:15px;cursor:pointer;background:var(--tape);color:#2A1D00;border:none;border-radius:999px;padding:11px 22px}
   button.act:hover{background:#FFC33D}
-  button.act[disabled]{opacity:.45;cursor:default}
-  button.ghost{
-    font:inherit;font-size:14px;cursor:pointer;background:transparent;color:#B7C8E2;
-    border:1px solid #3A5178;border-radius:999px;padding:10px 18px;
-  }
+  button.ghost{font:inherit;font-size:14px;cursor:pointer;background:transparent;color:#B7C8E2;border:1px solid #3A5178;border-radius:999px;padding:10px 18px}
   button.ghost:hover{border-color:#7C93B8;color:#fff}
+  .counter{font-size:13px;color:#8FA5C6;margin-left:auto}
 
   /* ---------- sections ---------- */
   section{padding:52px 0 8px}
   section h2{font-size:clamp(24px,4vw,34px);margin-bottom:8px}
   section h2 .hi{font-size:0.82em;margin-right:10px;vertical-align:-0.04em}
   section .lede{color:var(--ink-soft);max-width:60ch;margin-bottom:26px}
+  .aside{color:var(--ink-soft);max-width:60ch;margin-top:22px;font-size:15px}
 
-  /* ---------- before/after toggle ---------- */
-  .switcher{display:flex;gap:0;border:1px solid var(--line);border-radius:999px;background:var(--panel);padding:4px;width:fit-content;margin-bottom:20px}
-  .switcher button{
-    font:inherit;font-weight:600;font-size:14.5px;cursor:pointer;border:none;background:transparent;
-    color:var(--ink-soft);padding:9px 20px;border-radius:999px;
-  }
+  /* ---------- before/after ---------- */
+  .switcher{display:flex;border:1px solid var(--line);border-radius:999px;background:var(--panel);padding:4px;width:fit-content;margin-bottom:20px}
+  .switcher button{font:inherit;font-weight:600;font-size:14.5px;cursor:pointer;border:none;background:transparent;color:var(--ink-soft);padding:9px 20px;border-radius:999px}
   .switcher button[aria-selected="true"]{background:var(--ink);color:#fff}
   .compare{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:24px}
-  .compare h3{font-size:20px;margin-bottom:10px}
+  .compare h3{font-size:20px;margin-bottom:12px}
   .compare ul{margin:0;padding-left:0;list-style:none}
   .compare li{margin-bottom:10px}
-  .compare li b{font-weight:600}
-  .chaos h3{color:var(--swiss)}
+  .chaos h3{color:#C8102E}
   .order h3{color:var(--pipe)}
 
   /* ---------- flip cards ---------- */
   .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:14px}
-  .flip{
-    perspective:1000px;height:252px;cursor:pointer;
-  }
-  .flip .inner{
-    position:relative;display:block;width:100%;height:100%;
-    transition:transform .5s cubic-bezier(.2,.8,.25,1);transform-style:preserve-3d;
-  }
+  .flip{perspective:1000px;height:262px;cursor:pointer}
+  .flip .inner{position:relative;display:block;width:100%;height:100%;transition:transform .5s cubic-bezier(.2,.8,.25,1);transform-style:preserve-3d}
   .flip[aria-pressed="true"] .inner{transform:rotateY(180deg)}
   .face{
     position:absolute;top:0;left:0;width:100%;height:100%;
@@ -129,24 +109,23 @@
   .face .ico{font-size:28px;line-height:1;margin-bottom:12px}
   .face .term{font-family:"Bricolage Grotesque",sans-serif;font-weight:800;font-size:21px;letter-spacing:-0.02em;line-height:1.15}
   .face .said{font-size:12.5px;color:var(--ink-soft);margin-top:6px}
-  .face .hint{margin-top:auto;font-size:12.5px;color:#8494AF}
+  .face .hint{margin-top:auto;font-size:12.5px;color:#8494AF;padding-top:10px}
   .face.back .body{font-size:14.5px;line-height:1.5}
-  .face.back .de{margin-top:auto;font-size:12.5px;color:#8FA5C6;padding-top:12px}
+  .face.back .note{margin-top:auto;font-size:12.5px;color:#8FA5C6;padding-top:12px}
   .flip.hot .face.front{border-color:var(--tape);border-width:2px}
   .flip.hot .face.front .term::after{content:"★";color:var(--tape);font-size:14px;margin-left:6px;vertical-align:super}
-  .flip.ref{height:272px}
+  .flip.ref{height:278px}
   .flip.ref .face.front{border-left:5px solid var(--pipe)}
   .flip.ref .face.back{background:var(--pipe);border-color:var(--pipe);color:#F0FAF8}
-  .flip.ref .face.back .de{color:#B9E0DA;border-top:1px solid rgba(255,255,255,.22);margin-top:auto}
-  @media (max-width:400px){ .flip{height:272px} .flip.ref{height:310px} }
+  .flip.ref .face.back .note{color:#B9E0DA;border-top:1px solid rgba(255,255,255,.22)}
 
   /* ---------- roles ---------- */
   .roles{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:14px}
   .role{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:20px;border-left:5px solid var(--pipe)}
   .role .ri{font-size:26px;line-height:1;display:block;margin-bottom:10px}
   .role h3{font-size:19px;margin-bottom:2px}
-  .role .de{font-size:12.5px;color:var(--ink-soft);margin-bottom:12px}
-  .role p{font-size:15px;margin-bottom:10px}
+  .role .sub{font-size:12.5px;color:var(--ink-soft);margin-bottom:12px}
+  .role p.body{font-size:15px;margin-bottom:10px}
   .role .day{font-size:13.5px;color:var(--ink-soft);border-top:1px solid var(--line);padding-top:10px;margin:0}
   .role .day b{color:var(--ink);font-weight:600}
 
@@ -159,17 +138,11 @@
 
   /* ---------- checklist ---------- */
   .list{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);overflow:hidden}
-  .item{display:flex;gap:0;border-bottom:1px solid var(--line)}
-  .item:last-child{border-bottom:none}
-  .item button{
-    font:inherit;text-align:left;cursor:pointer;background:none;border:none;color:inherit;
-    padding:15px 18px;width:100%;display:flex;gap:13px;align-items:flex-start;font-size:15.5px;
-  }
+  .item{border-bottom:1px solid var(--line)}
+  .item:last-of-type{border-bottom:none}
+  .item button{font:inherit;text-align:left;cursor:pointer;background:none;border:none;color:inherit;padding:15px 18px;width:100%;display:flex;gap:13px;align-items:flex-start;font-size:15.5px}
   .item button:hover{background:#F2F6FA}
-  .box{
-    flex:0 0 22px;width:22px;height:22px;border:2px solid var(--line);border-radius:6px;margin-top:1px;
-    display:grid;place-items:center;font-size:14px;color:transparent;transition:.15s;
-  }
+  .box{flex:0 0 22px;width:22px;height:22px;border:2px solid var(--line);border-radius:6px;margin-top:1px;display:grid;place-items:center;font-size:14px;color:transparent;transition:.15s}
   .item button[aria-pressed="true"] .box{background:var(--pipe);border-color:var(--pipe);color:#fff}
   .item button[aria-pressed="true"] .txt{color:var(--ink-soft);text-decoration:line-through}
   .progress{padding:13px 18px;font-size:14px;color:var(--ink-soft);background:#F2F6FA;border-top:1px solid var(--line)}
@@ -182,27 +155,22 @@
   .q:first-of-type{border-top:none}
   .q .prompt{font-weight:600;color:#fff;margin-bottom:12px;font-size:16.5px}
   .opts{display:flex;flex-direction:column;gap:8px}
-  .opts button{
-    font:inherit;font-size:15px;text-align:left;cursor:pointer;
-    background:#1E2E4A;border:1px solid #33486B;color:#DCE6F5;border-radius:9px;padding:11px 15px;
-  }
+  .opts button{font:inherit;font-size:15px;text-align:left;cursor:pointer;background:#1E2E4A;border:1px solid #33486B;color:#DCE6F5;border-radius:9px;padding:11px 15px}
   .opts button:hover:not(:disabled){border-color:#7C93B8}
   .opts button:disabled{cursor:default}
   .opts button.right{background:#12776E;border-color:#12776E;color:#fff}
   .opts button.wrong{background:#4A1F26;border-color:#8A3644;color:#F3C9CF}
-  .why{font-size:14.5px;color:#9DB0CC;margin:11px 0 0;min-height:1px}
+  .why{font-size:14.5px;color:#9DB0CC;margin:11px 0 0}
   .score{margin-top:22px;padding-top:18px;border-top:1px solid #2F4364;font-size:16px;color:#fff;font-weight:600}
 
   footer{padding:44px 0 60px;color:var(--ink-soft);font-size:14px}
   footer p{max-width:62ch}
 
-  @media (max-width:760px){
-    .stations{grid-template-columns:repeat(3,1fr)}
-  }
+  @media (max-width:760px){ .stations{grid-template-columns:repeat(3,1fr)} }
   @media (max-width:680px){
     body{font-size:16px}
     .wrap{padding:0 16px}
-    header.top{padding:30px 0 26px}
+    header.top{padding:24px 0 26px}
     section{padding:42px 0 6px}
     .track{padding:18px 14px 16px}
     .stn{padding:10px 6px}
@@ -211,7 +179,6 @@
     .stn .de{font-size:10.5px}
     .compare{padding:18px}
     .quiz{padding:20px 18px}
-    .controls{gap:8px}
     .controls button.act,.controls button.ghost{flex:1 1 100%;text-align:center}
     .counter{margin:2px 0 0;width:100%;text-align:center}
     .switcher{width:100%}
@@ -221,7 +188,8 @@
   }
   @media (max-width:440px){
     .stations{grid-template-columns:repeat(2,1fr)}
-    .flip{height:284px}
+    .flip{height:292px}
+    .flip.ref{height:316px}
     header.top h1{max-width:none}
   }
   @media (prefers-reduced-motion:reduce){
@@ -234,32 +202,28 @@
 
 <header class="top">
   <div class="wrap">
-    <p class="kicker">Before your day at DATA UNIT AG · Sursee &amp; Baden</p>
-    <h1>They build the <em>invisible machine</em> a company runs on.</h1>
-    <p class="sub">Nobody outside the company ever sees it. But if it stops, nothing gets sold, shipped or paid for. Here's how it works — press the button.</p>
+    <div class="toprow">
+      <p class="kicker" id="kicker"></p>
+      <div class="lang" role="group" aria-label="Language / Sprache">
+        <button type="button" id="lang-en" aria-pressed="true">EN</button>
+        <button type="button" id="lang-de" aria-pressed="false">DE</button>
+      </div>
+    </div>
+    <h1 id="h1"></h1>
+    <p class="sub" id="sub"></p>
   </div>
 </header>
 
 <div class="rig">
   <div class="wrap">
     <div class="track">
-      <p class="track-label">A customer orders 200 screws from a Swiss factory. Watch what has to happen.</p>
-      <div class="stations" id="stations">
-        <div class="stn" data-i="0"><span class="icon">🛒</span><span class="en">Order comes in</span><span class="de">Bestellung</span></div>
-        <div class="stn" data-i="1"><span class="icon">📦</span><span class="en">Check the stock</span><span class="de">Lager</span></div>
-        <div class="stn" data-i="2"><span class="icon">🏭</span><span class="en">Make what's missing</span><span class="de">Produktion</span></div>
-        <div class="stn" data-i="3"><span class="icon">🚚</span><span class="en">Pack and ship</span><span class="de">Versand</span></div>
-        <div class="stn" data-i="4"><span class="icon">🧾</span><span class="en">Send the bill</span><span class="de">Rechnung</span></div>
-        <div class="stn" data-i="5"><span class="icon">📊</span><span class="en">Did we make money?</span><span class="de">Buchhaltung</span></div>
-      </div>
-      <div class="readout" id="readout" role="status" aria-live="polite">
-        <span class="who">Ready</span>
-        Six different departments. Six different people. They all need to know the same thing at the same time — and none of them wants to phone the others.
-      </div>
+      <p class="track-label" id="trackLabel"></p>
+      <div class="stations" id="stations"></div>
+      <div class="readout" id="readout" role="status" aria-live="polite"></div>
       <div class="controls">
-        <button class="act" id="go">Start: the order arrives</button>
-        <button class="ghost" id="reset">Start again</button>
-        <span class="counter" id="counter">6 steps</span>
+        <button class="act" id="go"></button>
+        <button class="ghost" id="reset"></button>
+        <span class="counter" id="counter"></span>
       </div>
     </div>
   </div>
@@ -268,325 +232,166 @@
 <main class="wrap">
 
 <section>
-  <h2><span class="hi" aria-hidden="true">🧩</span>So what is DATA UNIT's job?</h2>
-  <p class="lede">That whole chain above is run by one big piece of software called an <strong>ERP system</strong>. DATA UNIT doesn't invent it — a giant German company called <strong>SAP</strong> does. DATA UNIT are the people who install it, bend it into the shape a particular business needs, and keep it running afterwards.</p>
-
-  <div class="switcher" role="tablist" aria-label="Company with or without ERP">
-    <button role="tab" id="tab-a" aria-selected="true" aria-controls="pane">Company without an ERP</button>
-    <button role="tab" id="tab-b" aria-selected="false" aria-controls="pane">Same company with one</button>
+  <h2><span class="hi" aria-hidden="true">🧩</span><span id="s1t"></span></h2>
+  <p class="lede" id="s1l"></p>
+  <div class="switcher" role="tablist">
+    <button role="tab" id="tab-a" aria-selected="true" aria-controls="pane"></button>
+    <button role="tab" id="tab-b" aria-selected="false" aria-controls="pane"></button>
   </div>
-
-  <div class="compare chaos" id="pane" role="tabpanel" aria-labelledby="tab-a">
-    <h3>Everyone keeps their own list</h3>
-    <ul>
-      <li>📊 Sales writes orders in <b>Excel</b>. The warehouse keeps a paper folder. Accounting has a third list.</li>
-      <li>😬 Somebody sells 200 screws that were already promised to another customer yesterday.</li>
-      <li>📞 A customer phones asking where their delivery is. Four people get asked. Nobody knows.</li>
-      <li>🧮 At the end of the month, working out whether the company actually made money takes a week.</li>
-      <li>🗺️ Every new employee has to learn where all the secret lists live.</li>
-    </ul>
-  </div>
+  <div class="compare chaos" id="pane" role="tabpanel" aria-labelledby="tab-a"></div>
 </section>
 
 <section>
-  <h2><span class="hi" aria-hidden="true">💬</span>Words you'll hear on the day</h2>
-  <p class="lede">Tap a card to flip it. The starred ones are the four that come up constantly — if you only remember four, remember those.</p>
+  <h2><span class="hi" aria-hidden="true">💬</span><span id="s2t"></span></h2>
+  <p class="lede" id="s2l"></p>
   <div class="grid" id="cards"></div>
 </section>
 
 <section>
-  <h2><span class="hi" aria-hidden="true">🔍</span>Who actually uses this stuff</h2>
-  <p class="lede">No Galaxus, sorry — companies that big write their own systems. DATA UNIT works with Swiss firms of roughly 10 to 300 people, which sounds boring until you find out what they make. Guess before you flip.</p>
+  <h2><span class="hi" aria-hidden="true">🔍</span><span id="s3t"></span></h2>
+  <p class="lede" id="s3l"></p>
   <div class="grid" id="refs"></div>
-  <p class="lede" style="margin-top:22px">These come from case studies DATA UNIT and SAP have published. Some are a few years old, so a couple of details may have moved on — which is itself a decent thing to ask about.</p>
+  <p class="aside" id="s3n"></p>
 </section>
 
 <section>
-  <h2><span class="hi" aria-hidden="true">🪑</span>Who's sitting at which desk</h2>
-  <p class="lede">Roughly 50 people work at DATA UNIT. Almost all of them do one of these five jobs. Worth spotting which one looks most fun to you — that's a great thing to say at the end of the day.</p>
-  <div class="roles">
-
-    <div class="role">
-      <span class="ri" aria-hidden="true">🧭</span><h3>Consultant</h3>
-      <p class="de">Beraterin / Berater</p>
-      <p>Sits with the customer and asks a hundred questions about how their business actually works, then decides how the software should be set up to match. Half detective, half translator.</p>
-      <p class="day"><b>Their day:</b> meetings, whiteboards, writing down what a company does step by step.</p>
-    </div>
-
-    <div class="role">
-      <span class="ri" aria-hidden="true">⌨️</span><h3>Developer</h3>
-      <p class="de">Entwickler / Programmiererin</p>
-      <p>Writes the code for the bits SAP doesn't do out of the box. A Swiss company might need a special label printed, or their webshop wired into the warehouse. That's a developer's job.</p>
-      <p class="day"><b>Their day:</b> code, testing, fixing the thing that broke at 4pm.</p>
-    </div>
-
-    <div class="role">
-      <span class="ri" aria-hidden="true">🗓️</span><h3>Project manager</h3>
-      <p class="de">Projektleiterin / Projektleiter</p>
-      <p>Switching a company onto a new ERP takes months and can't go wrong — the business has to keep selling the whole time. This person keeps the plan, the budget and everyone's nerves in one piece.</p>
-      <p class="day"><b>Their day:</b> plans, deadlines, chasing people, calming customers down.</p>
-    </div>
-
-    <div class="role">
-      <span class="ri" aria-hidden="true">🎧</span><h3>Support</h3>
-      <p class="de">Support</p>
-      <p>When something stops working at a customer, they phone here. Support takes the ticket, works out what's wrong, and fixes it — often while the customer is still on the line.</p>
-      <p class="day"><b>Their day:</b> tickets, phone calls, detective work, quick wins.</p>
-    </div>
-
-    <div class="role">
-      <span class="ri" aria-hidden="true">🤝</span><h3>Sales</h3>
-      <p class="de">Verkauf</p>
-      <p>Finds companies that need a new system and convinces them DATA UNIT is the right partner. Has to understand the technology well enough to be honest about what it can't do.</p>
-      <p class="day"><b>Their day:</b> customer visits, demos, offers, lots of driving.</p>
-    </div>
-
-  </div>
+  <h2><span class="hi" aria-hidden="true">🪑</span><span id="s4t"></span></h2>
+  <p class="lede" id="s4l"></p>
+  <div class="roles" id="roles"></div>
 </section>
 
 <section>
-  <h2><span class="hi" aria-hidden="true">📊</span>The company in six numbers</h2>
-  <p class="lede">Useful if someone asks "so, do you know anything about us?" — which they probably will.</p>
-  <div class="facts">
-    <div class="fact"><div class="fi" aria-hidden="true">🕰️</div><div class="n">1974</div><div class="l">Founded. Older than the internet, older than your parents' first computer.</div></div>
-    <div class="fact"><div class="fi" aria-hidden="true">👥</div><div class="n">~50</div><div class="l">Employees, across two offices: Sursee (Luzern) and Baden (Aargau).</div></div>
-    <div class="fact"><div class="fi" aria-hidden="true">🏢</div><div class="n">~150</div><div class="l">Companies whose SAP systems they look after.</div></div>
-    <div class="fact"><div class="fi" aria-hidden="true">🇨🇭</div><div class="n">100%</div><div class="l">Swiss and owner-run. Not part of a big international group.</div></div>
-    <div class="fact"><div class="fi" aria-hidden="true">📦</div><div class="n">3</div><div class="l">Main customer types: wholesale, manufacturing, services.</div></div>
-    <div class="fact"><div class="fi" aria-hidden="true">💬</div><div class="n">“we do ERP.”</div><div class="l">Their actual slogan. Now you know exactly what it means.</div></div>
-  </div>
+  <h2><span class="hi" aria-hidden="true">📊</span><span id="s5t"></span></h2>
+  <p class="lede" id="s5l"></p>
+  <div class="facts" id="facts"></div>
 </section>
 
 <section>
-  <h2><span class="hi" aria-hidden="true">✅</span>Your plan for the day</h2>
-  <p class="lede">Tick these off as you go. The questions at the bottom are the ones that make adults think "this kid was paying attention".</p>
+  <h2><span class="hi" aria-hidden="true">✅</span><span id="s6t"></span></h2>
+  <p class="lede" id="s6l"></p>
   <div class="list" id="checklist"></div>
 </section>
 
 <section>
   <div class="quiz">
-    <h2><span class="hi" aria-hidden="true">🎯</span>Six questions</h2>
-    <p class="lede">If you get these right, you know more about DATA UNIT than most people who walk in the door.</p>
+    <h2><span class="hi" aria-hidden="true">🎯</span><span id="s7t"></span></h2>
+    <p class="lede" id="s7l"></p>
     <div id="quiz"></div>
-    <div class="score" id="score" aria-live="polite">Not started</div>
+    <div class="score" id="score" aria-live="polite"></div>
   </div>
 </section>
 
-<footer class="wrap">
-  <p>Built from what DATA UNIT AG publishes about itself, plus general background on ERP and SAP. Details like team size and customer numbers are approximate and may have changed — good excuse to ask them directly.</p>
-</footer>
+<footer><p id="foot"></p></footer>
 
 </main>
 
 <script>
 (function(){
 
-  /* ================= PIPELINE ================= */
-  var steps = [
-    {who:"Sales", txt:"A customer emails: <b>200 screws, needed Friday</b>. Sales types the order into the system once. That's the last time anyone types it."},
-    {who:"Warehouse", txt:"The system already knows there are <b>only 120 screws</b> on the shelf. It reserves those and flags the gap — before anyone promises a date they can't keep."},
-    {who:"Production", txt:"An order for the missing <b>80 screws</b> appears on the factory floor's screen. Nobody had to phone anybody."},
-    {who:"Shipping", txt:"All 200 are ready. The system prints the delivery note and the label with <b>the right address</b>, because it's the same address sales typed on Monday."},
-    {who:"Accounting", txt:"The invoice writes itself from the delivery. Right price, right customer, right day. <b>No typing, no typos.</b>"},
-    {who:"Management", txt:"The boss opens a screen and sees what these 200 screws cost, what they sold for, and <b>whether it was worth doing</b>. That's the whole point."}
-  ];
-  var stns = Array.prototype.slice.call(document.querySelectorAll('.stn'));
-  var readout = document.getElementById('readout');
-  var go = document.getElementById('go');
-  var reset = document.getElementById('reset');
-  var counter = document.getElementById('counter');
-  var at = -1;
+/* ==================== CONTENT ==================== */
+var T = {};
 
-  function paint(i){
-    stns.forEach(function(s, n){
-      s.classList.toggle('live', n === i);
-      s.classList.toggle('done', n < i);
-    });
-    readout.innerHTML = '<span class="who">' + steps[i].who + '</span>' + steps[i].txt;
-  }
-  function startOver(){
-    at = -1;
-    stns.forEach(function(s){ s.classList.remove('live','done'); });
-    readout.innerHTML = '<span class="who">Ready</span>Six different departments. Six different people. They all need to know the same thing at the same time — and none of them wants to phone the others.';
-    go.textContent = 'Start: the order arrives';
-    counter.textContent = '6 steps';
-  }
-  function advance(){
-    at++;
-    if(at >= steps.length){
-      stns.forEach(function(s){ s.classList.remove('live'); s.classList.add('done'); });
-      readout.innerHTML = '<span class="who">That was one order</span>Six departments, one shared set of facts. That shared set of facts is the ERP system. <b>Selling it, setting it up and keeping it alive is DATA UNIT\u2019s entire business.</b>';
-      go.textContent = 'Run it again';
-      counter.textContent = 'Finished';
-      return;
-    }
-    paint(at);
-    counter.textContent = 'Step ' + (at + 1) + ' of ' + steps.length;
-    go.textContent = (at === steps.length - 1) ? 'And finally…' : 'Next step';
-  }
-  go.addEventListener('click', function(){
-    if(at >= steps.length) startOver();
-    advance();
-  });
-  reset.addEventListener('click', startOver);
-  stns.forEach(function(s){
-    s.addEventListener('click', function(){
-      var n = parseInt(s.getAttribute('data-i'), 10);
-      at = n;
-      paint(n);
-      counter.textContent = 'Step ' + (n + 1) + ' of ' + steps.length;
-      go.textContent = (n === steps.length - 1) ? 'And finally…' : 'Next step';
-    });
-  });
+T.en = {
+  htmlLang:'en',
+  kicker:'Before your day at DATA UNIT AG · Sursee &amp; Baden',
+  h1:'They build the <em>invisible machine</em> a company runs on.',
+  sub:'Nobody outside the company ever sees it. But if it stops, nothing gets sold, shipped or paid for. Here\u2019s how it works — press the button.',
+  trackLabel:'A customer orders 200 screws from a Swiss factory. Watch what has to happen.',
+  readyWho:'Ready',
+  ready:'Six different departments. Six different people. They all need to know the same thing at the same time — and none of them wants to phone the others.',
+  doneWho:'That was one order',
+  done:'Six departments, one shared set of facts. That shared set of facts is the ERP system. <b>Selling it, setting it up and keeping it alive is DATA UNIT\u2019s entire business.</b>',
+  goStart:'Start: the order arrives', goNext:'Next step', goFinal:'And finally…', goAgain:'Run it again',
+  reset:'Start again', cIdle:'6 steps', cStep:'Step {n} of {t}', cDone:'Finished',
+  stations:['Order comes in','Check the stock','Make what\u2019s missing','Pack and ship','Send the bill','Did we make money?'],
+  steps:[
+    {who:'Sales', txt:'A customer emails: <b>200 screws, needed Friday</b>. Sales types the order into the system once. That\u2019s the last time anyone types it.'},
+    {who:'Warehouse', txt:'The system already knows there are <b>only 120 screws</b> on the shelf. It reserves those and flags the gap — before anyone promises a date they can\u2019t keep.'},
+    {who:'Production', txt:'An order for the missing <b>80 screws</b> appears on the factory floor\u2019s screen. Nobody had to phone anybody.'},
+    {who:'Shipping', txt:'All 200 are ready. The system prints the delivery note and the label with <b>the right address</b>, because it\u2019s the same address sales typed on Monday.'},
+    {who:'Accounting', txt:'The invoice writes itself from the delivery. Right price, right customer, right day. <b>No typing, no typos.</b>'},
+    {who:'Management', txt:'The boss opens a screen and sees what these 200 screws cost, what they sold for, and <b>whether it was worth doing</b>. That\u2019s the whole point.'}
+  ],
 
-  /* ================= BEFORE / AFTER ================= */
-  var tabA = document.getElementById('tab-a'), tabB = document.getElementById('tab-b'), pane = document.getElementById('pane');
-  var chaos = pane.innerHTML;
-  var order = '<h3>One shared set of facts</h3><ul>' +
-    '<li>✍️  order is typed in <b>once</b>. Everyone else reads the same entry.</li>' +
-    '<li>📦 ck updates itself the second something is picked, so nothing gets sold twice.</li>' +
-    '<li>⚡ one can answer "where is my delivery?" in about five seconds.</li>' +
-    '<li>💰 fit for the month is a screen, not a week of work.</li>' +
-    '<li>🎒  employee? They learn one system instead of twelve secret folders.</li></ul>';
-  function pick(which){
-    var on = which === 'b';
-    tabB.setAttribute('aria-selected', on ? 'true' : 'false');
-    tabA.setAttribute('aria-selected', on ? 'false' : 'true');
-    pane.innerHTML = on ? order : chaos;
-    pane.className = 'compare ' + (on ? 'order' : 'chaos');
-    pane.setAttribute('aria-labelledby', on ? 'tab-b' : 'tab-a');
-  }
-  tabA.addEventListener('click', function(){ pick('a'); });
-  tabB.addEventListener('click', function(){ pick('b'); });
+  s1t:'So what is DATA UNIT\u2019s job?',
+  s1l:'That whole chain above is run by one big piece of software called an <strong>ERP system</strong>. DATA UNIT doesn\u2019t invent it — a giant German company called <strong>SAP</strong> does. DATA UNIT are the people who install it, bend it into the shape a particular business needs, and keep it running afterwards.',
+  tabA:'Company without an ERP', tabB:'Same company with one',
+  chaosTitle:'Everyone keeps their own list',
+  chaos:[
+    '📊 Sales writes orders in <b>Excel</b>. The warehouse keeps a paper folder. Accounting has a third list.',
+    '😬 Somebody sells 200 screws that were already promised to another customer yesterday.',
+    '📞 A customer phones asking where their delivery is. Four people get asked. Nobody knows.',
+    '🧮 At the end of the month, working out whether the company actually made money takes a week.',
+    '🗺️ Every new employee has to learn where all the secret lists live.'
+  ],
+  orderTitle:'One shared set of facts',
+  order:[
+    '✍️ The order is typed in <b>once</b>. Everyone else reads the same entry.',
+    '📦 Stock updates itself the second something is picked, so nothing gets sold twice.',
+    '⚡ Anyone can answer "where is my delivery?" in about five seconds.',
+    '💰 Profit for the month is a screen, not a week of work.',
+    '🎒 New employee? They learn one system instead of twelve secret folders.'
+  ],
 
-  /* ================= FLIP CARDS ================= */
-  var terms = [
-    {t:'ERP', s:'"ee-ar-pee"', hot:true,
-     b:'Enterprise Resource Planning. One giant program that runs everything a company does — orders, stock, production, invoices, staff, money — out of one shared database. It is the thing DATA UNIT sells.',
-     de:'German: same word. Everyone says "das ERP".'},
-    {t:'SAP', s:'say the letters: "ess-ay-pee"', hot:true,
-     b:'A German software giant, founded 1972, one of the biggest software companies on earth. SAP writes the ERP software. DATA UNIT is an official partner who installs and adapts it for Swiss companies.',
-     de:'Never say "sapp". Locals say "ess-ah-peh".'},
-    {t:'SAP Business One', s:'often shortened to "B1"', hot:true,
-     b:'The version of SAP built for smaller companies — say 10 to 300 people. This is DATA UNIT\u2019s bread and butter. If you hear "B1", this is it.',
-     de:'"Business One" or just "B-eins".'},
-    {t:'S/4HANA', s:'"ess-four-hah-nah"', hot:true,
-     b:'SAP\u2019s newer, bigger ERP. HANA is the super-fast database underneath it. The "Cloud Public Edition" version runs in SAP\u2019s own data centres, so the customer needs no server of their own.',
-     de:'Often just called "S/4".'},
-    {t:'KMU', s:'"kah-em-oo"',
-     b:'Kleine und mittlere Unternehmen — small and medium-sized businesses. Almost every Swiss company is one. These are DATA UNIT\u2019s customers.',
-     de:'English equivalent: SME.'},
-    {t:'Cloud vs. On-Premise',s:'',
-     b:'Cloud = the software runs on somebody else\u2019s computers, reached over the internet. On-Premise = it runs on a server in the customer\u2019s own building. DATA UNIT does both, and is moving customers toward cloud.',
-     de:'"in der Cloud" / "im Haus".'},
-    {t:'Implementation', s:'',
-     b:'The months-long project of switching a company onto a new ERP: setting it up, moving the old data across, training everyone, then going live. The riskiest and most interesting part of the job.',
-     de:'German: Einführung or Implementierung.'},
-    {t:'Go-live', s:'',
-     b:'The day the new system is switched on for real and the old one is switched off. Usually a weekend. Usually a bit tense. Usually followed by pizza.',
-     de:'Same word in German.'},
-    {t:'Interface', s:'',
-     b:'A connection that lets two different programs talk to each other — for example the webshop telling the ERP that something was sold. DATA UNIT builds a lot of these; it\u2019s one of the things they\u2019re known for.',
-     de:'German: Schnittstelle. You will hear this word a LOT.'},
-    {t:'EDI', s:'"ee-dee-eye"',
-     b:'Electronic Data Interchange. Big customers like Migros or Coop don\u2019t email orders — their computer sends them straight into the supplier\u2019s computer in an agreed format. EDI is that plumbing.',
-     de:'Same abbreviation in German.'},
-    {t:'Database', s:'',
-     b:'The place all the facts actually live — every customer, product, price and order, stored in enormous tables. Everything else on this page is just a nicer way of looking at the database.',
-     de:'German: Datenbank.'},
-    {t:'Ticket', s:'',
-     b:'When a customer reports a problem it becomes a numbered ticket. Support works through them. "Wie viele Tickets hast du heute?" is normal small talk here.',
-     de:'Same word in German.'},
-    {t:'Customising', s:'',
-     b:'Changing settings inside SAP so it fits one particular company — no new code, just choices. Different from development, and consultants are quick to point that out.',
-     de:'German: Customizing, said the English way.'},
-    {t:'Migration', s:'',
-     b:'Moving all the old data — thousands of customers and products — from the old system into the new one without losing or scrambling any of it. Boring-sounding, genuinely hard.',
-     de:'German: Datenmigration.'},
-    {t:'Lehre / Apprenticeship', s:'',
-     b:'In Switzerland most people in this building learned the job by doing a 4-year Lehre, often as Informatiker EFZ Applikationsentwicklung, while going to school part-time. Ask someone about theirs.',
-     de:'Your day here is a Schnuppertag.'}
-  ];
-  var refs = [
-    {t:'Micos Engineering', s:'Wauwil / Dübendorf · What do they build?',
-     b:'Optical instruments for European space missions — parts of weather and climate satellites like Sentinel-4, Sentinel-5, Copernicus CO2M and Proba-3. Clean rooms, the lot.',
-     de:'DATA UNIT had them running on SAP Business One in twelve weeks.'},
-    {t:'DMB Technics', s:'Hünenberg ZG, ~31 people · What do they make?',
-     b:'The little screens on machines. Coffee machines, washing machines, medical kit, cars. There is a decent chance something in your kitchen has their display in it.',
-     de:'Grew from 2 customers to 200 on the same system. 17 years, no data lost.'},
-    {t:'m-way', s:'30+ shops across Switzerland · Selling what?',
-     b:'Electric bikes. Before the ERP, the whole ordering and stock system ran on Excel files and there was no online shop at all.',
-     de:'DATA UNIT automated the ordering and warehouse side.'},
-    {t:'Brandschutz Ettiswil', s:'A number: 100,000. Of what?',
-     b:'Fire extinguishers — they check over 100,000 of them across Switzerland. They also run one of the more advanced Swiss webshops, wired straight into the warehouse.',
-     de:'Webshop connected to SAP so stock is watched in real time.'},
-    {t:'Robatech', s:'Muri, Aargau · What do they build?',
-     b:'Machines and robots that apply glue in factories — the thing that seals your cereal box or a nappy, thousands of times an hour.',
-     de:'DATA UNIT rolled SAP out across their subsidiaries worldwide.'},
-    {t:'Reiden Technik', s:'~60 people · What comes out the door?',
-     b:'Huge milling machines that cut metal. Every single one is a one-off, built to order — which is exactly why they need to look up what went into each machine years later.',
-     de:'Their COO: on a button press, we see what we built in.'},
-    {t:'Chemie Brunschwig', s:'Basel, since 1948 · How many products?',
-     b:'Over two million different items in the catalogue — chemicals and lab supplies for hospitals, universities and research labs. Try managing that in a spreadsheet.',
-     de:'Webshop and SAP linked live via DATA UNIT\u2019s own connector.'},
-    {t:'Otto Rohrunterhalt', s:'Somebody has to · Doing what?',
-     b:'Blocked drains and broken sewer pipes. Not glamorous, very necessary — and until recently the whole job ran on paper checklists.',
-     de:'Now one system for jobs, parts, people and invoices.'},
-    {t:'KALT AG', s:'A factory · What got plugged in?',
-     b:'Their shop-floor terminals, several industrial robots and all their customer data now sit in one connected system. Almost 100% of their paperwork is digital.',
-     de:'Robots and ERP talking to each other.'},
-    {t:'Integra Biosciences', s:'Lab kit · For doing what?',
-     b:'Precision instruments that squirt exact tiny amounts of liquid — the pipettes scientists use for testing and research, sold worldwide.',
-     de:'International company, Swiss ERP partner.'},
-    {t:'Ladenmacher', s:'Hägendorf SO · What do they make?',
-     b:'Shops. They design and build entire shop interiors, from the drawing to the finished thing — every job different, so working out what it will cost and how long it takes is the hard part.',
-     de:'ERP used for time and cost tracking per project.'},
-    {t:'KEUNE Schweiz', s:'1,000 customers · Who are they?',
-     b:'Hairdressers. KEUNE is the exclusive Swiss distributor of a Dutch haircare brand and supplies over a thousand salons in Switzerland and Liechtenstein.',
-     de:'Classic wholesale case: stock in, stock out, fast.'}
-  ];
+  s2t:'Words you\u2019ll hear on the day',
+  s2l:'Tap a card to flip it. The starred ones are the four that come up constantly — if you only remember four, remember those.',
+  tapFind:'Tap to find out', tapAnswer:'Tap for the answer',
+  terms:[
+    {t:'ERP', s:'"ee-ar-pee"', hot:1, b:'Enterprise Resource Planning. One giant program that runs everything a company does — orders, stock, production, invoices, staff, money — out of one shared database. It is the thing DATA UNIT sells.', n:'German: same word. Everyone says "das ERP".'},
+    {t:'SAP', s:'say the letters: "ess-ay-pee"', hot:1, b:'A German software giant, founded 1972, one of the biggest software companies on earth. SAP writes the ERP software. DATA UNIT is an official partner who installs and adapts it for Swiss companies.', n:'Never say "sapp". Locals say "ess-ah-peh".'},
+    {t:'SAP Business One', s:'often shortened to "B1"', hot:1, b:'The version of SAP built for smaller companies — say 10 to 300 people. This is DATA UNIT\u2019s bread and butter. If you hear "B1", this is it.', n:'"Business One" or just "B-eins".'},
+    {t:'S/4HANA', s:'"ess-four-hah-nah"', hot:1, b:'SAP\u2019s newer, bigger ERP. HANA is the super-fast database underneath it. The "Cloud Public Edition" runs in SAP\u2019s own data centres, so the customer needs no server of their own.', n:'Often just called "S/4".'},
+    {t:'KMU', s:'"kah-em-oo"', b:'Kleine und mittlere Unternehmen — small and medium-sized businesses. Almost every Swiss company is one. These are DATA UNIT\u2019s customers.', n:'English equivalent: SME.'},
+    {t:'Cloud vs. On-Premise', s:'', b:'Cloud = the software runs on somebody else\u2019s computers, reached over the internet. On-Premise = it runs on a server in the customer\u2019s own building. DATA UNIT does both, and is moving customers toward cloud.', n:'German: "in der Cloud" / "im Haus".'},
+    {t:'Implementation', s:'', b:'The months-long project of switching a company onto a new ERP: setting it up, moving the old data across, training everyone, then going live. The riskiest and most interesting part of the job.', n:'German: Einführung or Implementierung.'},
+    {t:'Go-live', s:'', b:'The day the new system is switched on for real and the old one is switched off. Usually a weekend. Usually a bit tense. Usually followed by pizza.', n:'Same word in German.'},
+    {t:'Interface', s:'', b:'A connection that lets two different programs talk to each other — for example the webshop telling the ERP that something was sold. DATA UNIT builds a lot of these; it\u2019s one of the things they\u2019re known for.', n:'German: Schnittstelle. You will hear this word a LOT.'},
+    {t:'EDI', s:'"ee-dee-eye"', b:'Electronic Data Interchange. Big customers like Migros or Coop don\u2019t email orders — their computer sends them straight into the supplier\u2019s computer in an agreed format. EDI is that plumbing.', n:'Same abbreviation in German.'},
+    {t:'Database', s:'', b:'The place all the facts actually live — every customer, product, price and order, stored in enormous tables. Everything else on this page is just a nicer way of looking at the database.', n:'German: Datenbank.'},
+    {t:'Ticket', s:'', b:'When a customer reports a problem it becomes a numbered ticket. Support works through them. "Wie viele Tickets hast du heute?" is normal small talk here.', n:'Same word in German.'},
+    {t:'Customising', s:'', b:'Changing settings inside SAP so it fits one particular company — no new code, just choices. Different from development, and consultants are quick to point that out.', n:'German: Customizing, said the English way.'},
+    {t:'Migration', s:'', b:'Moving all the old data — thousands of customers and products — from the old system into the new one without losing or scrambling any of it. Boring-sounding, genuinely hard.', n:'German: Datenmigration.'},
+    {t:'Lehre / Apprenticeship', s:'', b:'In Switzerland most people in this building learned the job by doing a 4-year Lehre, often as Informatiker EFZ Applikationsentwicklung, while going to school part-time. Ask someone about theirs.', n:'Your day here is a Schnuppertag.'}
+  ],
 
-  var termIcons = ['🧠','🇩🇪','1️⃣','⚡','🏘️','☁️','🏗️','🚦','🔌','📡','🗄️','🎫','🎛️','📤','🎓'];
-  var refIcons  = ['🛰️','📺','🚲','🧯','🤖','⚙️','🧪','🪠','🏭','💧','🏬','💇'];
+  s3t:'Who actually uses this stuff',
+  s3l:'No Galaxus, sorry — companies that big write their own systems. DATA UNIT works with Swiss firms of roughly 10 to 300 people, which sounds boring until you find out what they make. Guess before you flip.',
+  s3n:'These come from case studies DATA UNIT and SAP have published. Some are a few years old, so a couple of details may have moved on — which is itself a decent thing to ask about.',
+  refs:[
+    {t:'Micos Engineering', s:'Wauwil / Dübendorf · What do they build?', b:'Optical instruments for European space missions — parts of weather and climate satellites like Sentinel-4, Sentinel-5, Copernicus CO2M and Proba-3. Clean rooms, the lot.', n:'DATA UNIT had them running on SAP Business One in twelve weeks.'},
+    {t:'DMB Technics', s:'Hünenberg ZG, ~31 people · What do they make?', b:'The little screens on machines. Coffee machines, washing machines, medical kit, cars. There is a decent chance something in your kitchen has their display in it.', n:'Grew from 2 customers to 200 on the same system. 17 years, no data lost.'},
+    {t:'m-way', s:'30+ shops across Switzerland · Selling what?', b:'Electric bikes. Before the ERP, the whole ordering and stock system ran on Excel files and there was no online shop at all.', n:'DATA UNIT automated the ordering and warehouse side.'},
+    {t:'Brandschutz Ettiswil', s:'A number: 100,000. Of what?', b:'Fire extinguishers — they check over 100,000 of them across Switzerland. They also run one of the more advanced Swiss webshops, wired straight into the warehouse.', n:'Webshop connected to SAP so stock is watched in real time.'},
+    {t:'Robatech', s:'Muri, Aargau · What do they build?', b:'Machines and robots that apply glue in factories — the thing that seals your cereal box, thousands of times an hour.', n:'DATA UNIT rolled SAP out across their subsidiaries worldwide.'},
+    {t:'Otto Rohrunterhalt', s:'Somebody has to · Doing what?', b:'Blocked drains and broken sewer pipes. Not glamorous, very necessary — and until recently the whole job ran on paper checklists.', n:'Now one system for jobs, parts, people and invoices.'}
+  ],
 
-  function buildCard(x, extra, icon){
-    var el = document.createElement('div');
-    el.className = 'flip' + extra + (x.hot ? ' hot' : '');
-    el.setAttribute('role','button');
-    el.setAttribute('tabindex','0');
-    el.setAttribute('aria-pressed','false');
-    el.innerHTML =
-      '<div class="inner">' +
-        '<div class="face front">' +
-          '<div class="ico" aria-hidden="true">' + icon + '</div>' +
-          '<div class="term">' + x.t + '</div>' +
-          (x.s ? '<div class="said">' + x.s + '</div>' : '') +
-          '<div class="hint">' + (extra ? 'Tap for the answer' : 'Tap to find out') + '</div>' +
-        '</div>' +
-        '<div class="face back">' +
-          '<div class="body">' + x.b + '</div>' +
-          '<div class="de">' + x.de + '</div>' +
-        '</div>' +
-      '</div>';
-    function toggle(){
-      var on = el.getAttribute('aria-pressed') === 'true';
-      el.setAttribute('aria-pressed', on ? 'false' : 'true');
-    }
-    el.addEventListener('click', toggle);
-    el.addEventListener('keydown', function(e){
-      if(e.key === 'Enter' || e.key === ' ' || e.key === 'Spacebar'){ e.preventDefault(); toggle(); }
-    });
-    return el;
-  }
+  s4t:'Who\u2019s sitting at which desk',
+  s4l:'Roughly 50 people work at DATA UNIT. Almost all of them do one of these five jobs. Worth spotting which one looks most fun to you — that\u2019s a great thing to say at the end of the day.',
+  dayLabel:'Their day:',
+  roles:[
+    {t:'Consultant', sub:'Beraterin / Berater', b:'Sits with the customer and asks a hundred questions about how their business actually works, then decides how the software should be set up to match. Half detective, half translator.', d:'meetings, whiteboards, writing down what a company does step by step.'},
+    {t:'Developer', sub:'Entwickler / Programmiererin', b:'Writes the code for the bits SAP doesn\u2019t do out of the box. A Swiss company might need a special label printed, or their webshop wired into the warehouse. That\u2019s a developer\u2019s job.', d:'code, testing, fixing the thing that broke at 4pm.'},
+    {t:'Project manager', sub:'Projektleiterin / Projektleiter', b:'Switching a company onto a new ERP takes months and can\u2019t go wrong — the business has to keep selling the whole time. This person keeps the plan, the budget and everyone\u2019s nerves in one piece.', d:'plans, deadlines, chasing people, calming customers down.'},
+    {t:'Support', sub:'Support', b:'When something stops working at a customer, they phone here. Support takes the ticket, works out what\u2019s wrong, and fixes it — often while the customer is still on the line.', d:'tickets, phone calls, detective work, quick wins.'},
+    {t:'Sales', sub:'Verkauf', b:'Finds companies that need a new system and convinces them DATA UNIT is the right partner. Has to understand the technology well enough to be honest about what it can\u2019t do.', d:'customer visits, demos, offers, lots of driving.'}
+  ],
 
-  var cards = document.getElementById('cards');
-  terms.forEach(function(x, i){ cards.appendChild(buildCard(x, '', termIcons[i])); });
+  s5t:'The company in six numbers',
+  s5l:'Useful if someone asks "so, do you know anything about us?" — which they probably will.',
+  facts:[
+    {n:'1974', l:'Founded. Older than the internet, older than your parents\u2019 first computer.'},
+    {n:'~50', l:'Employees, across two offices: Sursee (Luzern) and Baden (Aargau).'},
+    {n:'~150', l:'Companies whose SAP systems they look after.'},
+    {n:'100%', l:'Swiss and owner-run. Not part of a big international group.'},
+    {n:'3', l:'Main customer types: wholesale, manufacturing, services.'},
+    {n:'“we do ERP.”', l:'Their actual slogan. Now you know exactly what it means.'}
+  ],
 
-  var refGrid = document.getElementById('refs');
-  refs.forEach(function(x, i){ refGrid.appendChild(buildCard(x, ' ref', refIcons[i])); });
-
-  /* ================= CHECKLIST ================= */
-  var todo = [
+  s6t:'Your plan for the day',
+  s6l:'Tick these off as you go. The questions at the bottom are the ones that make adults think "this kid was paying attention".',
+  progress:'{d} of {t} done',
+  todo:[
     '🤝 Say your name clearly and shake hands. In Switzerland this genuinely counts.',
     '📓 Write things down. Take a notebook. People notice.',
     '🙋 When you don\u2019t understand a word, ask what it means. That is the correct move, not the embarrassing one.',
@@ -598,74 +403,388 @@
     '🛰️ Name-drop one customer you read about — Micos, DMB Technics, Robatech — and ask what they did for them.',
     '🔎 Find out what an average customer of theirs actually makes or sells.',
     '🙏 At the end, say what you found most interesting and thank them. One sentence is enough.'
-  ];
-  var cl = document.getElementById('checklist');
-  var done = 0;
+  ],
+
+  s7t:'Six questions',
+  s7l:'If you get these right, you know more about DATA UNIT than most people who walk in the door.',
+  sIdle:'Not started', sMid:'{r} right out of {a}', sFinal:'Final score: {r} out of {t}',
+  sWin:' — you\u2019re ready.', sLose:' — flip back through the cards and try again.',
+  quiz:[
+    {p:'What does DATA UNIT actually sell?', o:['Computers and printers','Websites for shops','SAP software plus the work of setting it up and running it','Their own invented ERP system'], a:2, w:'They\u2019re an SAP partner. SAP writes the software; DATA UNIT chooses it, installs it, adapts it and supports it.'},
+    {p:'What does ERP stand for?', o:['Electronic Retail Payments','Enterprise Resource Planning','European Reporting Protocol','Extended Rapid Processing'], a:1, w:'Enterprise Resource Planning — one system covering orders, stock, production, invoices and money.'},
+    {p:'Which SAP product is DATA UNIT best known for with smaller companies?', o:['SAP Business One','Microsoft Excel','SAP Formula One','Oracle'], a:0, w:'SAP Business One, often just called "B1", is the small-and-medium-business version.'},
+    {p:'A colleague says "wir müssen noch eine Schnittstelle bauen". What are they building?', o:['A new office','A connection between two programs','A price list','A cutting machine'], a:1, w:'Schnittstelle = interface. Connecting a webshop to the ERP, for example. You will hear this word constantly.'},
+    {p:'One DATA UNIT customer builds instruments that end up where?', o:['Underwater','On European weather and climate satellites','In Formula 1 cars','Inside volcanoes'], a:1, w:'Micos Engineering builds optical instruments for missions like Sentinel-4, Sentinel-5 and Copernicus CO2M — and runs the business on SAP Business One.'},
+    {p:'Where are DATA UNIT\u2019s two offices?', o:['Zürich and Genf','Bern and Basel','Sursee and Baden','Lugano and St. Gallen'], a:2, w:'Sursee in Kanton Luzern and Baden in Kanton Aargau.'}
+  ],
+
+  foot:'Built from what DATA UNIT AG publishes about itself, plus general background on ERP and SAP. Details like team size and customer numbers are approximate and may have changed — good excuse to ask them directly.'
+};
+
+T.de = {
+  htmlLang:'de',
+  kicker:'Vor deinem Schnuppertag bei der DATA UNIT AG · Sursee &amp; Baden',
+  h1:'Sie bauen die <em>unsichtbare Maschine</em>, mit der eine Firma läuft.',
+  sub:'Von aussen sieht man sie nie. Aber wenn sie stehen bleibt, wird nichts mehr verkauft, geliefert oder bezahlt. So funktioniert sie — drück auf den Knopf.',
+  trackLabel:'Ein Kunde bestellt 200 Schrauben bei einer Schweizer Fabrik. Schau, was alles passieren muss.',
+  readyWho:'Bereit',
+  ready:'Sechs verschiedene Abteilungen. Sechs verschiedene Leute. Alle müssen zur gleichen Zeit dasselbe wissen — und niemand will die anderen anrufen.',
+  doneWho:'Das war eine einzige Bestellung',
+  done:'Sechs Abteilungen, ein gemeinsamer Stand der Dinge. Dieser gemeinsame Stand der Dinge ist das ERP-System. <b>Es zu verkaufen, einzurichten und am Laufen zu halten, ist das ganze Geschäft der DATA UNIT.</b>',
+  goStart:'Los: die Bestellung kommt an', goNext:'Nächster Schritt', goFinal:'Und zum Schluss…', goAgain:'Nochmals',
+  reset:'Zurücksetzen', cIdle:'6 Schritte', cStep:'Schritt {n} von {t}', cDone:'Fertig',
+  stations:['Bestellung','Lager prüfen','Fehlendes herstellen','Versand','Rechnung','Hat es sich gelohnt?'],
+  steps:[
+    {who:'Verkauf', txt:'Ein Kunde mailt: <b>200 Schrauben, bis Freitag</b>. Der Verkauf tippt die Bestellung einmal ins System. Danach tippt sie niemand mehr.'},
+    {who:'Lager', txt:'Das System weiss bereits, dass nur noch <b>120 Schrauben</b> am Lager sind. Es reserviert sie und meldet die Lücke — bevor jemand einen Termin verspricht, den er nicht halten kann.'},
+    {who:'Produktion', txt:'Ein Auftrag über die fehlenden <b>80 Schrauben</b> erscheint auf dem Bildschirm in der Fertigung. Niemand musste telefonieren.'},
+    {who:'Versand', txt:'Alle 200 sind bereit. Das System druckt Lieferschein und Etikette mit <b>der richtigen Adresse</b> — es ist dieselbe, die der Verkauf am Montag erfasst hat.'},
+    {who:'Buchhaltung', txt:'Die Rechnung entsteht automatisch aus der Lieferung. Richtiger Preis, richtiger Kunde, richtiger Tag. <b>Kein Tippen, keine Tippfehler.</b>'},
+    {who:'Geschäftsleitung', txt:'Die Chefin öffnet einen Bildschirm und sieht, was diese 200 Schrauben gekostet haben, was sie eingebracht haben und <b>ob es sich gelohnt hat</b>. Genau darum geht es.'}
+  ],
+
+  s1t:'Was ist also die Aufgabe der DATA UNIT?',
+  s1l:'Diese ganze Kette oben läuft über ein einziges grosses Programm, ein <strong>ERP-System</strong>. DATA UNIT erfindet es nicht — das macht ein riesiger deutscher Konzern namens <strong>SAP</strong>. DATA UNIT sind die Leute, die es installieren, auf die jeweilige Firma zuschneiden und danach am Laufen halten.',
+  tabA:'Firma ohne ERP', tabB:'Dieselbe Firma mit ERP',
+  chaosTitle:'Jeder führt seine eigene Liste',
+  chaos:[
+    '📊 Der Verkauf schreibt Bestellungen in <b>Excel</b>. Das Lager hat einen Papierordner. Die Buchhaltung führt eine dritte Liste.',
+    '😬 Jemand verkauft 200 Schrauben, die gestern schon einem anderen Kunden versprochen wurden.',
+    '📞 Ein Kunde fragt am Telefon, wo seine Lieferung bleibt. Vier Leute werden gefragt. Niemand weiss es.',
+    '🧮 Am Monatsende dauert es eine Woche, bis klar ist, ob die Firma überhaupt Geld verdient hat.',
+    '🗺️ Jede neue Mitarbeiterin muss zuerst lernen, wo all die geheimen Listen liegen.'
+  ],
+  orderTitle:'Ein gemeinsamer Stand der Dinge',
+  order:[
+    '✍️ Die Bestellung wird <b>einmal</b> erfasst. Alle anderen lesen denselben Eintrag.',
+    '📦 Der Lagerbestand aktualisiert sich sofort beim Rüsten — nichts wird doppelt verkauft.',
+    '⚡ Jede und jeder kann in fünf Sekunden sagen, wo die Lieferung steckt.',
+    '💰 Der Monatsgewinn ist ein Bildschirm, keine Wochenarbeit.',
+    '🎒 Neue Mitarbeitende lernen ein System statt zwölf geheime Ordner.'
+  ],
+
+  s2t:'Wörter, die du an dem Tag hören wirst',
+  s2l:'Tippe auf eine Karte, um sie umzudrehen. Die vier mit dem Stern kommen ständig vor — wenn du dir nur vier merkst, dann diese.',
+  tapFind:'Tippen zum Aufdecken', tapAnswer:'Tippen für die Antwort',
+  terms:[
+    {t:'ERP', s:'„E-R-P“', hot:1, b:'Enterprise Resource Planning. Ein einziges grosses Programm, das alles steuert, was eine Firma tut — Bestellungen, Lager, Produktion, Rechnungen, Personal, Geld — aus einer gemeinsamen Datenbank. Genau das verkauft die DATA UNIT.', n:'Alle sagen einfach „das ERP“.'},
+    {t:'SAP', s:'man sagt „ess-ah-peh“', hot:1, b:'Ein deutscher Software-Riese, gegründet 1972, eine der grössten Softwarefirmen der Welt. SAP schreibt die ERP-Software. DATA UNIT ist offizieller Partner und richtet sie für Schweizer Firmen ein.', n:'Auf Englisch buchstabiert: „ess-ay-pee“ — nie „sapp“.'},
+    {t:'SAP Business One', s:'oft kurz „B1“', hot:1, b:'Die SAP-Version für kleinere Firmen — etwa 10 bis 300 Mitarbeitende. Das ist das Kerngeschäft der DATA UNIT. Wenn jemand „B1“ sagt, meint er das.', n:'Man sagt „Business One“ oder „B-eins“.'},
+    {t:'S/4HANA', s:'„ess-vier-hana“', hot:1, b:'Das neuere, grössere ERP von SAP. HANA ist die extrem schnelle Datenbank darunter. Die „Cloud Public Edition“ läuft in den Rechenzentren von SAP — der Kunde braucht keinen eigenen Server.', n:'Meist einfach „S/4“.'},
+    {t:'KMU', s:'„ka-em-u“', b:'Kleine und mittlere Unternehmen. Fast jede Schweizer Firma ist eines. Das sind die Kunden der DATA UNIT.', n:'Auf Englisch: SME.'},
+    {t:'Cloud vs. On-Premise', s:'', b:'Cloud = die Software läuft auf fremden Computern und wird übers Internet genutzt. On-Premise = sie läuft auf einem Server im eigenen Haus. DATA UNIT macht beides und bringt Kunden zunehmend in die Cloud.', n:'Im Gespräch: „in der Cloud“ oder „bei uns im Haus“.'},
+    {t:'Einführung', s:'auch „Implementierung“', b:'Das monatelange Projekt, eine Firma auf ein neues ERP umzustellen: einrichten, alte Daten übernehmen, alle schulen, dann live gehen. Der riskanteste und spannendste Teil der Arbeit.', n:'Englisch: implementation.'},
+    {t:'Go-live', s:'', b:'Der Tag, an dem das neue System wirklich eingeschaltet und das alte abgeschaltet wird. Meist an einem Wochenende. Meist etwas angespannt. Meist mit Pizza danach.', n:'Gleiches Wort auf Englisch.'},
+    {t:'Schnittstelle', s:'englisch: interface', b:'Eine Verbindung, über die zwei verschiedene Programme miteinander reden — zum Beispiel der Webshop, der dem ERP meldet, dass etwas verkauft wurde. DATA UNIT baut sehr viele davon; dafür sind sie bekannt.', n:'Dieses Wort hörst du garantiert oft.'},
+    {t:'EDI', s:'„e-de-i“', b:'Electronic Data Interchange. Grosse Kunden wie Migros oder Coop mailen keine Bestellungen — ihr Computer schickt sie in einem vereinbarten Format direkt in den Computer des Lieferanten. EDI ist diese Leitung.', n:'Gleiche Abkürzung auf Englisch.'},
+    {t:'Datenbank', s:'', b:'Der Ort, an dem alle Fakten wirklich liegen — jeder Kunde, jedes Produkt, jeder Preis, jede Bestellung, in riesigen Tabellen. Alles andere auf dieser Seite ist nur eine schönere Ansicht der Datenbank.', n:'Englisch: database.'},
+    {t:'Ticket', s:'', b:'Meldet ein Kunde ein Problem, wird daraus ein nummeriertes Ticket. Der Support arbeitet sie ab. „Wie viele Tickets hast du heute?“ ist hier ganz normaler Small Talk.', n:'Gleiches Wort auf Englisch.'},
+    {t:'Customizing', s:'englisch ausgesprochen', b:'Einstellungen in SAP so ändern, dass es zu einer bestimmten Firma passt — kein neuer Programmcode, nur Entscheidungen. Etwas anderes als Entwicklung, und Beraterinnen weisen gern darauf hin.', n:'Englisch: customising.'},
+    {t:'Datenmigration', s:'', b:'Alle alten Daten — Tausende Kunden und Artikel — vom alten ins neue System zügeln, ohne etwas zu verlieren oder zu verdrehen. Klingt langweilig, ist wirklich schwierig.', n:'Englisch: data migration.'},
+    {t:'Lehre', s:'', b:'Die meisten Leute in diesem Haus haben den Beruf über eine 4-jährige Lehre gelernt, oft als Informatiker/in EFZ Applikationsentwicklung, mit Berufsschule daneben. Frag jemanden nach seiner.', n:'Dein Tag hier ist ein Schnuppertag.'}
+  ],
+
+  s3t:'Wer das Ganze wirklich benutzt',
+  s3l:'Kein Galaxus, sorry — so grosse Firmen bauen ihre Systeme selbst. DATA UNIT arbeitet mit Schweizer Firmen von etwa 10 bis 300 Mitarbeitenden. Klingt langweilig, bis man sieht, was die herstellen. Rate zuerst, dann umdrehen.',
+  s3n:'Die Angaben stammen aus veröffentlichten Fallstudien von DATA UNIT und SAP. Einige sind ein paar Jahre alt, es kann sich also etwas geändert haben — auch das ist eine gute Frage für den Tag.',
+  refs:[
+    {t:'Micos Engineering', s:'Wauwil / Dübendorf · Was bauen die?', b:'Optische Instrumente für europäische Weltraummissionen — Teile von Wetter- und Klimasatelliten wie Sentinel-4, Sentinel-5, Copernicus CO2M und Proba-3. Mit Reinräumen und allem.', n:'DATA UNIT hatte sie in zwölf Wochen auf SAP Business One.'},
+    {t:'DMB Technics', s:'Hünenberg ZG, ~31 Mitarbeitende · Was stellen die her?', b:'Die kleinen Bildschirme an Geräten. Kaffeemaschinen, Waschmaschinen, Medizintechnik, Autos. Gut möglich, dass bei euch in der Küche eines ihrer Displays hängt.', n:'Von 2 auf 200 Kunden — im selben System. 17 Jahre, kein Datenverlust.'},
+    {t:'m-way', s:'Über 30 Filialen in der Schweiz · Womit handeln die?', b:'Mit E-Bikes. Vor dem ERP lief die ganze Bestellung und Lagerhaltung über Excel-Dateien, und einen Onlineshop gab es gar nicht.', n:'DATA UNIT hat Bestellwesen und Lager automatisiert.'},
+    {t:'Brandschutz Ettiswil', s:'Eine Zahl: 100 000. Wovon?', b:'Feuerlöscher — über 100 000 davon prüfen sie in der ganzen Schweiz. Dazu betreiben sie einen der modernsten Webshops der Schweiz, direkt ans Lager angebunden.', n:'Webshop und SAP verbunden, Lagerbestand in Echtzeit.'},
+    {t:'Robatech', s:'Muri, Aargau · Was bauen die?', b:'Maschinen und Roboter, die in Fabriken Leim auftragen — das, was deine Müeslischachtel zuklebt, tausende Male pro Stunde.', n:'DATA UNIT hat SAP weltweit bei den Tochterfirmen eingeführt.'},
+    {t:'Otto Rohrunterhalt', s:'Irgendwer muss · Was machen die?', b:'Verstopfte Abflüsse und kaputte Abwasserleitungen. Nicht glamourös, sehr nötig — und bis vor kurzem lief der ganze Job über Papierlisten.', n:'Jetzt ein System für Aufträge, Material, Leute und Rechnungen.'}
+  ],
+
+  s4t:'Wer sitzt an welchem Pult',
+  s4l:'Rund 50 Leute arbeiten bei der DATA UNIT. Fast alle machen einen dieser fünf Jobs. Es lohnt sich zu schauen, welcher am spannendsten aussieht — das ist eine super Antwort am Ende des Tages.',
+  dayLabel:'Der Tag:',
+  roles:[
+    {t:'Beraterin / Berater', sub:'Consultant', b:'Sitzt beim Kunden und stellt hundert Fragen dazu, wie die Firma wirklich arbeitet. Danach entscheidet sie, wie die Software eingerichtet werden muss. Halb Detektivin, halb Übersetzerin.', d:'Sitzungen, Whiteboards, Abläufe Schritt für Schritt aufschreiben.'},
+    {t:'Entwickler / Entwicklerin', sub:'Developer', b:'Schreibt den Code für alles, was SAP nicht ab Stange kann. Eine Schweizer Firma braucht vielleicht eine spezielle Etikette oder den Webshop am Lager angebunden. Genau das macht die Entwicklung.', d:'Code, Tests, und das reparieren, was um 16 Uhr kaputtgegangen ist.'},
+    {t:'Projektleiterin / Projektleiter', sub:'Project manager', b:'Eine Firma auf ein neues ERP umzustellen dauert Monate und darf nicht schiefgehen — das Geschäft muss die ganze Zeit weiterlaufen. Diese Person hält Plan, Budget und Nerven zusammen.', d:'Pläne, Termine, Leute nachfassen, Kunden beruhigen.'},
+    {t:'Support', sub:'Support', b:'Wenn beim Kunden etwas nicht mehr geht, ruft er hier an. Der Support nimmt das Ticket auf, findet den Fehler und behebt ihn — oft noch während der Kunde am Telefon ist.', d:'Tickets, Telefon, Detektivarbeit, schnelle Erfolge.'},
+    {t:'Verkauf', sub:'Sales', b:'Findet Firmen, die ein neues System brauchen, und überzeugt sie, dass DATA UNIT der richtige Partner ist. Muss die Technik gut genug verstehen, um ehrlich zu sagen, was nicht geht.', d:'Kundenbesuche, Demos, Offerten, viel Auto fahren.'}
+  ],
+
+  s5t:'Die Firma in sechs Zahlen',
+  s5l:'Nützlich, falls jemand fragt: „Weisst du eigentlich etwas über uns?“ — und das wird ziemlich sicher gefragt.',
+  facts:[
+    {n:'1974', l:'Gegründet. Älter als das Internet, älter als der erste Computer deiner Eltern.'},
+    {n:'~50', l:'Mitarbeitende, an zwei Standorten: Sursee (LU) und Baden (AG).'},
+    {n:'~150', l:'Firmen, deren SAP-Systeme sie betreuen.'},
+    {n:'100%', l:'Schweizerisch und inhabergeführt. Kein Teil eines internationalen Konzerns.'},
+    {n:'3', l:'Hauptkundentypen: Handel, Produktion, Dienstleistung.'},
+    {n:'“we do ERP.”', l:'Ihr echter Slogan. Jetzt weisst du genau, was er bedeutet.'}
+  ],
+
+  s6t:'Dein Plan für den Tag',
+  s6l:'Hak sie ab, während du durchkommst. Die Fragen unten sind die, bei denen Erwachsene denken: „Das Kind hat aufgepasst.“',
+  progress:'{d} von {t} erledigt',
+  todo:[
+    '🤝 Sag deinen Namen deutlich und gib die Hand. In der Schweiz zählt das wirklich.',
+    '📓 Schreib mit. Nimm ein Notizheft mit. Das fällt auf.',
+    '🙋 Wenn du ein Wort nicht verstehst, frag nach. Das ist der richtige Zug, nicht der peinliche.',
+    '🗣️ Frag: „Was hast du gestern konkret gemacht?“ — besser als „Was machst du?“',
+    '🧗 Frag: „Was ist das Schwierigste an deinem Job?“',
+    '🚨 Frag: „Was passiert, wenn beim Kunden das System stillsteht?“',
+    '⏱️ Frag: „Wie lange dauert es, eine Firma auf ein neues System umzustellen?“',
+    '🎓 Frag jemanden, der hier die Lehre gemacht hat, wie das erste Jahr war.',
+    '🛰️ Nenn einen Kunden, von dem du gelesen hast — Micos, DMB Technics, Robatech — und frag, was DATA UNIT für ihn gemacht hat.',
+    '🔎 Finde heraus, was ein typischer Kunde von ihnen eigentlich herstellt oder verkauft.',
+    '🙏 Sag am Schluss, was du am spannendsten fandest, und bedank dich. Ein Satz reicht.'
+  ],
+
+  s7t:'Sechs Fragen',
+  s7l:'Wenn du die richtig hast, weisst du mehr über die DATA UNIT als die meisten, die zur Tür reinkommen.',
+  sIdle:'Noch nicht gestartet', sMid:'{r} von {a} richtig', sFinal:'Endstand: {r} von {t}',
+  sWin:' — du bist bereit.', sLose:' — schau nochmals durch die Karten und versuch es erneut.',
+  quiz:[
+    {p:'Was verkauft die DATA UNIT eigentlich?', o:['Computer und Drucker','Websites für Läden','SAP-Software plus die Arbeit, sie einzurichten und zu betreiben','Ein eigenes, selbst erfundenes ERP-System'], a:2, w:'Sie sind SAP-Partner. SAP schreibt die Software; DATA UNIT wählt sie aus, installiert, passt an und betreut sie.'},
+    {p:'Wofür steht ERP?', o:['Electronic Retail Payments','Enterprise Resource Planning','European Reporting Protocol','Extended Rapid Processing'], a:1, w:'Enterprise Resource Planning — ein System für Bestellungen, Lager, Produktion, Rechnungen und Finanzen.'},
+    {p:'Welches SAP-Produkt ist bei kleineren Firmen ihr Klassiker?', o:['SAP Business One','Microsoft Excel','SAP Formula One','Oracle'], a:0, w:'SAP Business One, oft nur „B1“, ist die Version für kleine und mittlere Unternehmen.'},
+    {p:'Ein Kollege sagt: „Wir müssen noch eine Schnittstelle bauen.“ Was baut er?', o:['Ein neues Büro','Eine Verbindung zwischen zwei Programmen','Eine Preisliste','Eine Schneidemaschine'], a:1, w:'Schnittstelle heisst auf Englisch interface — zum Beispiel den Webshop ans ERP anbinden. Das Wort hörst du ständig.'},
+    {p:'Ein Kunde der DATA UNIT baut Instrumente, die wo landen?', o:['Unter Wasser','Auf europäischen Wetter- und Klimasatelliten','In Formel-1-Autos','In Vulkanen'], a:1, w:'Micos Engineering baut optische Instrumente für Missionen wie Sentinel-4, Sentinel-5 und Copernicus CO2M — und führt die Firma mit SAP Business One.'},
+    {p:'Wo sind die beiden Standorte der DATA UNIT?', o:['Zürich und Genf','Bern und Basel','Sursee und Baden','Lugano und St. Gallen'], a:2, w:'Sursee im Kanton Luzern und Baden im Kanton Aargau.'}
+  ],
+
+  foot:'Zusammengestellt aus dem, was die DATA UNIT AG selbst veröffentlicht, plus allgemeinem Hintergrund zu ERP und SAP. Angaben wie Teamgrösse und Kundenzahl sind ungefähr und können sich geändert haben — ein guter Grund, direkt nachzufragen.'
+};
+
+/* ==================== STATE ==================== */
+var lang = 'en';
+var L = T.en;
+var stationIcons = ['🛒','📦','🏭','🚚','🧾','📊'];
+var termIcons = ['🧠','🇩🇪','1️⃣','⚡','🏘️','☁️','🏗️','🚦','🔌','📡','🗄️','🎫','🎛️','📤','🎓'];
+var refIcons  = ['🛰️','📺','🚲','🧯','🤖','🪠'];
+var roleIcons = ['🧭','⌨️','🗓️','🎧','🤝'];
+var factIcons = ['🕰️','👥','🏢','🇨🇭','📦','💬'];
+
+var at = -1;                 // pipeline position
+var showOrder = false;       // before/after tab
+var flipped = {};            // card id -> bool
+var checked = [];            // checklist state
+var picked = [];             // quiz answers (index or null)
+
+function $(id){ return document.getElementById(id); }
+function fill(id, html){ $(id).innerHTML = html; }
+function tpl(s, o){ return s.replace(/\{(\w+)\}/g, function(_, k){ return o[k]; }); }
+
+/* ==================== PIPELINE ==================== */
+function renderStations(){
+  var box = $('stations');
+  box.innerHTML = '';
+  L.stations.forEach(function(label, i){
+    var other = (lang === 'en' ? T.de : T.en).stations[i];
+    var d = document.createElement('div');
+    d.className = 'stn';
+    d.innerHTML = '<span class="icon" aria-hidden="true">' + stationIcons[i] + '</span>' +
+                  '<span class="en">' + label + '</span>' +
+                  '<span class="de">' + other + '</span>';
+    d.addEventListener('click', function(){ at = i; paintPipeline(); });
+    box.appendChild(d);
+  });
+}
+function paintPipeline(){
+  var stns = $('stations').children;
+  for(var n = 0; n < stns.length; n++){
+    stns[n].classList.toggle('live', n === at);
+    stns[n].classList.toggle('done', at >= L.steps.length ? true : n < at);
+  }
+  if(at < 0){
+    fill('readout', '<span class="who">' + L.readyWho + '</span>' + L.ready);
+    $('go').textContent = L.goStart;
+    $('counter').textContent = L.cIdle;
+  } else if(at >= L.steps.length){
+    fill('readout', '<span class="who">' + L.doneWho + '</span>' + L.done);
+    $('go').textContent = L.goAgain;
+    $('counter').textContent = L.cDone;
+  } else {
+    fill('readout', '<span class="who">' + L.steps[at].who + '</span>' + L.steps[at].txt);
+    $('go').textContent = (at === L.steps.length - 1) ? L.goFinal : L.goNext;
+    $('counter').textContent = tpl(L.cStep, {n: at + 1, t: L.steps.length});
+  }
+  $('reset').textContent = L.reset;
+}
+$('go').addEventListener('click', function(){
+  if(at >= L.steps.length) at = -1;
+  at++;
+  paintPipeline();
+});
+$('reset').addEventListener('click', function(){ at = -1; paintPipeline(); });
+
+/* ==================== BEFORE / AFTER ==================== */
+function renderCompare(){
+  $('tab-a').textContent = L.tabA;
+  $('tab-b').textContent = L.tabB;
+  $('tab-a').setAttribute('aria-selected', showOrder ? 'false' : 'true');
+  $('tab-b').setAttribute('aria-selected', showOrder ? 'true' : 'false');
+  var title = showOrder ? L.orderTitle : L.chaosTitle;
+  var items = showOrder ? L.order : L.chaos;
+  var pane = $('pane');
+  pane.className = 'compare ' + (showOrder ? 'order' : 'chaos');
+  pane.setAttribute('aria-labelledby', showOrder ? 'tab-b' : 'tab-a');
+  pane.innerHTML = '<h3>' + title + '</h3><ul>' +
+    items.map(function(i){ return '<li>' + i + '</li>'; }).join('') + '</ul>';
+}
+$('tab-a').addEventListener('click', function(){ showOrder = false; renderCompare(); });
+$('tab-b').addEventListener('click', function(){ showOrder = true; renderCompare(); });
+
+/* ==================== FLIP CARDS ==================== */
+function buildCard(x, extra, icon, key){
+  var el = document.createElement('div');
+  el.className = 'flip' + extra + (x.hot ? ' hot' : '');
+  el.setAttribute('role','button');
+  el.setAttribute('tabindex','0');
+  el.setAttribute('aria-pressed', flipped[key] ? 'true' : 'false');
+  el.innerHTML =
+    '<div class="inner">' +
+      '<div class="face front">' +
+        '<div class="ico" aria-hidden="true">' + icon + '</div>' +
+        '<div class="term">' + x.t + '</div>' +
+        (x.s ? '<div class="said">' + x.s + '</div>' : '') +
+        '<div class="hint">' + (extra ? L.tapAnswer : L.tapFind) + '</div>' +
+      '</div>' +
+      '<div class="face back">' +
+        '<div class="body">' + x.b + '</div>' +
+        '<div class="note">' + x.n + '</div>' +
+      '</div>' +
+    '</div>';
+  function toggle(){
+    flipped[key] = !flipped[key];
+    el.setAttribute('aria-pressed', flipped[key] ? 'true' : 'false');
+  }
+  el.addEventListener('click', toggle);
+  el.addEventListener('keydown', function(e){
+    if(e.key === 'Enter' || e.key === ' ' || e.key === 'Spacebar'){ e.preventDefault(); toggle(); }
+  });
+  return el;
+}
+function renderCards(){
+  var c = $('cards'); c.innerHTML = '';
+  L.terms.forEach(function(x, i){ c.appendChild(buildCard(x, '', termIcons[i], 't' + i)); });
+  var r = $('refs'); r.innerHTML = '';
+  L.refs.forEach(function(x, i){ r.appendChild(buildCard(x, ' ref', refIcons[i], 'r' + i)); });
+}
+
+/* ==================== ROLES & FACTS ==================== */
+function renderRoles(){
+  var box = $('roles'); box.innerHTML = '';
+  L.roles.forEach(function(x, i){
+    var d = document.createElement('div');
+    d.className = 'role';
+    d.innerHTML = '<span class="ri" aria-hidden="true">' + roleIcons[i] + '</span>' +
+      '<h3>' + x.t + '</h3><p class="sub">' + x.sub + '</p>' +
+      '<p class="body">' + x.b + '</p>' +
+      '<p class="day"><b>' + L.dayLabel + '</b> ' + x.d + '</p>';
+    box.appendChild(d);
+  });
+}
+function renderFacts(){
+  var box = $('facts'); box.innerHTML = '';
+  L.facts.forEach(function(x, i){
+    var d = document.createElement('div');
+    d.className = 'fact';
+    d.innerHTML = '<span class="fi" aria-hidden="true">' + factIcons[i] + '</span>' +
+      '<div class="n">' + x.n + '</div><div class="l">' + x.l + '</div>';
+    box.appendChild(d);
+  });
+}
+
+/* ==================== CHECKLIST ==================== */
+function renderChecklist(){
+  var box = $('checklist'); box.innerHTML = '';
+  if(checked.length !== L.todo.length) checked = L.todo.map(function(){ return false; });
   var prog = document.createElement('div');
   prog.className = 'progress';
-  function updateProg(){ prog.textContent = done + ' of ' + todo.length + ' done'; }
-  todo.forEach(function(t){
+  function upd(){
+    var d = checked.filter(Boolean).length;
+    prog.textContent = tpl(L.progress, {d: d, t: L.todo.length});
+  }
+  L.todo.forEach(function(t, i){
     var row = document.createElement('div'); row.className = 'item';
     var b = document.createElement('button');
-    b.type='button'; b.setAttribute('aria-pressed','false');
+    b.type = 'button';
+    b.setAttribute('aria-pressed', checked[i] ? 'true' : 'false');
     b.innerHTML = '<span class="box" aria-hidden="true">✓</span><span class="txt">' + t + '</span>';
     b.addEventListener('click', function(){
-      var on = b.getAttribute('aria-pressed') === 'true';
-      b.setAttribute('aria-pressed', on ? 'false' : 'true');
-      done += on ? -1 : 1;
-      updateProg();
+      checked[i] = !checked[i];
+      b.setAttribute('aria-pressed', checked[i] ? 'true' : 'false');
+      upd();
     });
-    row.appendChild(b); cl.appendChild(row);
+    row.appendChild(b); box.appendChild(row);
   });
-  updateProg(); cl.appendChild(prog);
+  upd(); box.appendChild(prog);
+}
 
-  /* ================= QUIZ ================= */
-  var qs = [
-    {p:'What does DATA UNIT actually sell?',
-     o:['Computers and printers','Websites for shops','SAP software plus the work of setting it up and running it','Their own invented ERP system'],
-     a:2, w:'They\u2019re an SAP partner. SAP writes the software; DATA UNIT chooses it, installs it, adapts it and supports it.'},
-    {p:'What does ERP stand for?',
-     o:['Electronic Retail Payments','Enterprise Resource Planning','European Reporting Protocol','Extended Rapid Processing'],
-     a:1, w:'Enterprise Resource Planning — one system covering orders, stock, production, invoices and money.'},
-    {p:'Which SAP product is DATA UNIT best known for with smaller companies?',
-     o:['SAP Business One','Microsoft Excel','SAP Formula One','Oracle'],
-     a:0, w:'SAP Business One, often just called "B1", is the small-and-medium-business version.'},
-    {p:'A colleague says "wir müssen noch eine Schnittstelle bauen". What are they building?',
-     o:['A new office','A connection between two programs','A price list','A cutting machine'],
-     a:1, w:'Schnittstelle = interface. Connecting a webshop to the ERP, for example. You will hear this word constantly.'},
-    {p:'One DATA UNIT customer builds instruments that end up where?',
-     o:['Underwater','On European weather and climate satellites','In Formula 1 cars','Inside volcanoes'],
-     a:1, w:'Micos Engineering builds optical instruments for missions like Sentinel-4, Sentinel-5 and Copernicus CO2M — and runs the business on SAP Business One.'},
-    {p:'Where are DATA UNIT\u2019s two offices?',
-     o:['Zürich and Genf','Bern and Basel','Sursee and Baden','Lugano and St. Gallen'],
-     a:2, w:'Sursee in Kanton Luzern and Baden in Kanton Aargau.'}
-  ];
-  var quiz = document.getElementById('quiz');
-  var scoreEl = document.getElementById('score');
-  var right = 0, answered = 0;
-  qs.forEach(function(q, qi){
+/* ==================== QUIZ ==================== */
+function scoreText(){
+  var ans = picked.filter(function(v){ return v !== null && v !== undefined; }).length;
+  if(!ans) return L.sIdle;
+  var right = 0;
+  picked.forEach(function(v, i){ if(v === L.quiz[i].a) right++; });
+  if(ans < L.quiz.length) return tpl(L.sMid, {r: right, a: ans});
+  return tpl(L.sFinal, {r: right, t: L.quiz.length}) + (right === L.quiz.length ? L.sWin : L.sLose);
+}
+function renderQuiz(){
+  var box = $('quiz'); box.innerHTML = '';
+  if(picked.length !== L.quiz.length) picked = L.quiz.map(function(){ return null; });
+  L.quiz.forEach(function(q, qi){
     var wrapEl = document.createElement('div'); wrapEl.className = 'q';
-    var p = document.createElement('div'); p.className='prompt'; p.textContent = (qi+1) + '. ' + q.p;
-    var opts = document.createElement('div'); opts.className='opts';
-    var why = document.createElement('p'); why.className='why';
+    var p = document.createElement('div'); p.className = 'prompt';
+    p.textContent = (qi + 1) + '. ' + q.p;
+    var opts = document.createElement('div'); opts.className = 'opts';
+    var why = document.createElement('p'); why.className = 'why';
     q.o.forEach(function(text, oi){
-      var b = document.createElement('button'); b.type='button'; b.textContent = text;
+      var b = document.createElement('button'); b.type = 'button'; b.textContent = text;
       b.addEventListener('click', function(){
-        var all = opts.querySelectorAll('button');
-        Array.prototype.forEach.call(all, function(x){ x.disabled = true; });
-        all[q.a].classList.add('right');
-        if(oi !== q.a) b.classList.add('wrong'); else right++;
-        answered++;
-        why.textContent = q.w;
-        scoreEl.textContent = answered < qs.length
-          ? right + ' right out of ' + answered
-          : 'Final score: ' + right + ' out of ' + qs.length + (right === qs.length ? ' — you\u2019re ready.' : ' — flip back through the cards and try again.');
+        if(picked[qi] !== null) return;
+        picked[qi] = oi;
+        lockQ();
       });
       opts.appendChild(b);
     });
+    function lockQ(){
+      if(picked[qi] === null) return;
+      var all = opts.querySelectorAll('button');
+      Array.prototype.forEach.call(all, function(x){ x.disabled = true; });
+      all[q.a].classList.add('right');
+      if(picked[qi] !== q.a) all[picked[qi]].classList.add('wrong');
+      why.textContent = q.w;
+      $('score').textContent = scoreText();
+    }
     wrapEl.appendChild(p); wrapEl.appendChild(opts); wrapEl.appendChild(why);
-    quiz.appendChild(wrapEl);
+    box.appendChild(wrapEl);
+    lockQ();
   });
+  $('score').textContent = scoreText();
+}
+
+/* ==================== RENDER ALL ==================== */
+function render(){
+  L = T[lang];
+  document.documentElement.setAttribute('lang', L.htmlLang);
+  fill('kicker', L.kicker); fill('h1', L.h1); fill('sub', L.sub);
+  fill('trackLabel', L.trackLabel);
+  fill('s1t', L.s1t); fill('s1l', L.s1l);
+  fill('s2t', L.s2t); fill('s2l', L.s2l);
+  fill('s3t', L.s3t); fill('s3l', L.s3l); fill('s3n', L.s3n);
+  fill('s4t', L.s4t); fill('s4l', L.s4l);
+  fill('s5t', L.s5t); fill('s5l', L.s5l);
+  fill('s6t', L.s6t); fill('s6l', L.s6l);
+  fill('s7t', L.s7t); fill('s7l', L.s7l);
+  fill('foot', L.foot);
+  renderStations(); paintPipeline();
+  renderCompare(); renderCards(); renderRoles();
+  renderFacts(); renderChecklist(); renderQuiz();
+  $('lang-en').setAttribute('aria-pressed', lang === 'en' ? 'true' : 'false');
+  $('lang-de').setAttribute('aria-pressed', lang === 'de' ? 'true' : 'false');
+}
+function setLang(l){ if(l === lang) return; lang = l; render(); }
+$('lang-en').addEventListener('click', function(){ setLang('en'); });
+$('lang-de').addEventListener('click', function(){ setLang('de'); });
+
+render();
 
 })();
 </script>
